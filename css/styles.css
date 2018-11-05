@@ -1,0 +1,61 @@
+/* General Styles */
+
+body {
+  background-color: #6B2822;
+  color: #fff
+}
+
+.container {
+  min-width: 1;
+}
+
+/* Type Classes */ 
+.greeting {
+  /* text-align: center; */
+}
+
+.greeting h1 {
+  font-size: 42pt;
+  font-weight: 400;
+}
+
+.greeting h3 {
+  font-weight: 200;
+  font-style: italic;
+}
+
+/* Messages */
+.messageBox {
+  background-color: #cdcdcd;
+  height: 400px;
+  opacity: 0.8;
+  border-radius: 20px;
+}
+
+.messageBox > nav .nav-tabs > a {
+  background-color: #e4e4e4;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.messageBox > nav .nav-tabs > .active {
+  background-color: #fff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.message {
+  background-color: #fff;
+  color: #000;
+  /* border-bottom: 1px */
+}
+
+.message p {
+  margin-bottom: 0;
+}
+
+/* Popup Specific */
+
+.popupBody {
+  width: 500px;
+}
