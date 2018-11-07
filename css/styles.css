@@ -27,38 +27,61 @@ body {
 /* Messages */
 .messageBox {
   background-color: #cdcdcd;
-  height: 400px;
-  /* opacity: 0.8; */
-  border-radius: 20px;
+  height: 375px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  overflow: scroll;
 }
 
-.messageBox > nav .nav-tabs > a {
+nav .nav-tabs > a {
   background-color: #ececec;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  color: #495057;
   text-align: left;
   padding-left: 1rem;
 }
 
-.messageBox > nav .nav-tabs > .active {
+nav .nav-tabs > .active {
   background-color: #fff;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+}
+
+.nav-tabs .nav-link {
+  border-top-left-radius: 1.25rem;
+  border-top-right-radius: 1.25rem;
 }
 
 .message {
-  background-color: #fff;
+  background-color: #ececec;
   color: #000;
+  min-height: 35px;
   /* border-bottom: 1px */
+}
+
+.message:hover {
+  text-decoration: none;
+  color: #6B2822;
 }
 
 .message p {
   margin-bottom: 0;
 }
 
+.messageTime {
+  text-align: right;
+}
+
 .messageIcon {
   max-width: 25px;
   filter: grayscale(100%);
+}
+
+.unread {
+  background-color: #fff;
+  font-weight: 600;
+}
+
+.unread > .col-1 > .messageIcon {
+  filter: grayscale(0%)
 }
 
 /* Popup Specific */
