@@ -10,10 +10,13 @@ $(document).ready(function() {
         var client_id = '347262053333.468176603908';
         var redirectUri = 'https://fbabmokcobpglljmaeemkelecckeabfe.chromiumapp.org/'; //chrome.identity.getRedirectURL("oauth2");
         var scopes = 'channels:history,groups:history,im:history,mpim:history';
-        var auth_url = "https://slack.com/oauth/authorize?client_id=" + client_id + "&redirect_uri=" + redirectUri + "&scope="+scopes + "&response_type=token";
+        var auth_url = "https://slack.com/oauth/authorize?client_id=" + client_id + "&scope="+scopes + "&response_type=token";
         
         chrome.identity.launchWebAuthFlow({'url':auth_url,'interactive':true}, function(redirectUri){
-             console.log("end of auth: " + redirectUri); //remove console logging of authflow
+            var codeurl = new URL(redirectUri);
+            console.log(codeurl);
+            var extractedCode = codeurl.searchParams.get("code");
+            console.log("extracted code from slack auth" + extractedCode);
              $('#slack_auth').text("Slack authorized");
         });
     });
