@@ -2,10 +2,15 @@
   "name": "Getting Started Example",
   "version": "1.0",
   "description": "Build an Extension!",
-  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "permissions": ["activeTab", "declarativeContent", "storage", "identity", "tabs"],
   "options_page": "options.html",
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": [
+      "js/background.js",
+      "js/jquery.js",
+      "js/popper.min.js",
+      "js/bootstrap.min.js"
+    ],
     "persistent": false
   },
   "browser_action": {
