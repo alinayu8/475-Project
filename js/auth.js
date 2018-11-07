@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    // Redirect to Slack
+    // Redirect to Slack -- STILL SPECIFIC TO ALINA'S WORKSPACE OF MT2018-2019
     $('#slack_auth').click(function() {
         // Reset token for now
         var resetToken = '';
@@ -8,40 +8,31 @@ $(document).ready(function() {
          });
 
         var client_id = '347262053333.468176603908';
-        var redirectUri = 'https://fbabmokcobpglljmaeemkelecckeabfe.chromiumapp.org/'; //chrome.identity.getRedirectURL("oauth2");
+        var enc_client_secret = 'MGIwZDBkMmQ1YzNkZTE2ZGFiMmFiODBjODY5YjY1N2Y='; //encoded
         var scopes = 'channels:history,groups:history,im:history,mpim:history';
-        var auth_url = "https://slack.com/oauth/authorize?client_id=" + client_id + "&redirect_uri=" + redirectUri + "&scope="+scopes + "&response_type=token";
+        var auth_url = "https://slack.com/oauth/authorize?client_id=" + client_id + "&scope=" + scopes + "&response_type=token";
         
         chrome.identity.launchWebAuthFlow({'url':auth_url,'interactive':true}, function(redirectUri){
              console.log("end of auth: " + redirectUri); //remove console logging of authflow
 
              // Getting Verification code
              var codeurl = new URL(redirectUri);
-             var verificationCode = codeurl.searchParams.get("code");   
-             
-             // Extracting token
-            var client_secret = "0b0d0d2d5c3de16dab2ab80c869b657f";
-            var something = "client_id=" + client_id + "&?client_secret=" + client_secret + "&?";
-            //var something = "";
-            var tokenurl = "https://slack.com/api/oauth.access?" + something + "code=" + verificationCode + "&redirect_uri=" + redirectUri;
+             var verificationCode = codeurl.searchParams.get("code");
+
+             // Getting Access token
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", tokenurl, true);
+            var url = 'https://slack.com/api/oauth.access?client_id=' + client_id + '&client_secret=' + window.atob(enc_client_secret) + '&code=' + verificationCode;
+            
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
+                if(xhr.readyState == 4 && xhr.status == 200) {
                     var resp = JSON.parse(xhr.responseText);
-                    console.log('response' + resp);
+                    $('#slack_auth').text("Slack authorized");
+                    saveSlackToken(resp.access_token);
                 }
-                console.log('NOOOOO');
             }
-            var extractedToken = "xoxp-347262053333-347262053381-468153837988-3e259b55e98e2c781d8ebe8f400861e5";
-            //////////////TOKEN NEEDS TO BE REDONE UGHHHHHH
-             console.log("extracted token from slack auth " + extractedToken);  //remove console logging of saved token
-             if ((extractedToken == "") || (extractedToken == null)) {
-                 console.log("no token granted");
-             } else {
-                 saveSlackToken(extractedToken);
-                 $('#slack_auth').text("Slack authorized");
-             }
+            xhr.send();
         });
     });
     $('#slack_mssgs').click(function() {
@@ -59,11 +50,11 @@ function saveSlackToken(retrievedToken) {//retrieved token is the token passed t
 
 function addSlackMessages() {
     chrome.storage.sync.get('slackUserToken', function(result){ // retrieves token from user's Chrome options
-        console.log('retrieving' + result.slackUserToken);
         var tokenforcalls = result.slackUserToken;
-        var testChannel = "CA80JMH0E";
-        //var url = "https://slack.com/api/channels.history?token="+tokenforcalls+"&channel="+testChannel+"&unreads=false&pretty=1&as_user=true";
-        var url = "https://slack.com/api/channels.history?token="+tokenforcalls+"&channel="+testChannel+"&unreads=true&pretty=1&as_user=true";
+
+        // Retrieve conversation history
+        var testChannel = "CA6SB5GDA";
+        var url = "https://slack.com/api/channels.history?token="+tokenforcalls+"&channel="+testChannel+"&unreads=true&pretty=1&as_user=true&count=1";
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function() {
@@ -73,5 +64,8 @@ function addSlackMessages() {
             }
         }
         xhr.send();
+
+        // Retrieve users in conversation
+        // Retrieve channel name
     });
 }
