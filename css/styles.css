@@ -28,14 +28,16 @@ body {
 .messageBox {
   background-color: #cdcdcd;
   height: 400px;
-  opacity: 0.8;
+  /* opacity: 0.8; */
   border-radius: 20px;
 }
 
 .messageBox > nav .nav-tabs > a {
-  background-color: #e4e4e4;
+  background-color: #ececec;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+  text-align: left;
+  padding-left: 1rem;
 }
 
 .messageBox > nav .nav-tabs > .active {
@@ -52,6 +54,11 @@ body {
 
 .message p {
   margin-bottom: 0;
+}
+
+.messageIcon {
+  max-width: 25px;
+  filter: grayscale(100%);
 }
 
 /* Popup Specific */

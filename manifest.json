@@ -5,7 +5,12 @@
   "permissions": ["activeTab", "declarativeContent", "storage"],
   "options_page": "options.html",
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": [
+      "js/background.js",
+      "js/jquery.js",
+      "js/popper.min.js",
+      "js/bootstrap.min.js"
+    ],
     "persistent": false
   },
   "browser_action": {
@@ -20,5 +25,9 @@
     "48": "images/get_started48.png",
     "128": "images/get_started128.png"
   },
-  "manifest_version": 2
+  "manifest_version": 2,
+  "permissions": [
+    "activeTab", 
+    "tabs"
+  ]
 }
