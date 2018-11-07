@@ -34,7 +34,7 @@ $(document).ready(function() {
                 console.log('NOOOOO');
             }
             var extractedToken = "xoxp-347262053333-347262053381-468153837988-3e259b55e98e2c781d8ebe8f400861e5";
-
+            //////////////TOKEN NEEDS TO BE REDONE UGHHHHHH
              console.log("extracted token from slack auth " + extractedToken);  //remove console logging of saved token
              if ((extractedToken == "") || (extractedToken == null)) {
                  console.log("no token granted");
