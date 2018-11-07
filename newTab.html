@@ -41,6 +41,7 @@
   <script src="./js/jquery.js"></script>
   <script src="./js/popper.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
+  <script src="./js/auth.js"></script>
 
   <!-- General App Scripts -->
 
@@ -58,6 +59,13 @@
           <h3>You have 23 unread messages.</h3>
         </div>
       </div>
+      <!-- temporary Slack auth button -->
+      <button id="slack_auth" class="btn btn-primary ladda-button" data-style="zoom-in">
+        <span class="ladda-label">Slack Auth</span>
+      </button>
+      <button id="slack_mssgs" class="btn btn-primary ladda-button" data-style="zoom-in">
+          <span class="ladda-label">Request Messages</span>
+        </button>
     </div>
 
     <div class="row p-3">
