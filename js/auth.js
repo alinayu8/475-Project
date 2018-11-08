@@ -35,6 +35,10 @@ $(document).ready(function() {
             xhr.send();
         });
     });
+
+    $('#slack_mssgs').click(function() {
+        addSlackMessages();
+    });
 });
 
 //Saves the token to the user's Chrome storage
