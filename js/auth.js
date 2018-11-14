@@ -37,9 +37,8 @@ $(document).ready(function() {
             xhr.send();
         });
     });
-});
 
-//$('#slack_mssgs').click(function() {
+$('#slack_mssgs').click(function() {
     chrome.storage.sync.get('slackUserToken', async function(result){ // retrieves token from user's Chrome options
         let token = result.slackUserToken;
 
@@ -55,7 +54,7 @@ $(document).ready(function() {
             await addSlackConversations(token, key, channelName, userDictionary);
         }
     });
-//});
+});
 
 async function addSlackConversations(token,channelID,channelName,userDictionary) {
     const slackArray = await retrieveSlackMessages(channelID, token);
@@ -70,22 +69,23 @@ async function addSlackConversations(token,channelID,channelName,userDictionary)
     }
     let sender = retrieveSingleSlackUser(userDictionary, mssgUser);
     var text = `<a class='message' href='https://messenger.com'>
-        <div class='row p-3 ` + unread + ` d-flex align-items-center border-bottom border-dark'>
-        <div class='col-1 messagePlatform'>
-        <img class='messageIcon' src='./assets/icons/slack.png'>
-        </div>
-        <div class='col-3 messageSender'>
-        <p>` + channelName + `</p>
-        </div>
-        <div class='col-6 messageContent'>
-        <p>` + sender + ': ' + message + `</p>
-        </div>
-        <div class='col-2 messageTime'>
-        <p>` + time + `</p>
-        </div>
-        </div>
-        </a>`
-    $('#nav-unassigned').append(text);
+                <div class='row pl-3 pt-3 ` + unread + ` pr-3 pb-3 d-flex align-items-center border-bottom border-dark'>
+                  <div class='col-1 messagePlatform'>
+                    <i class='fa fa-grip-vertical fa-lg mr-2 messageGrip hidden' aria-hidden='true'></i>
+                    <img class='messageIcon' src='./assets/icons/slack.png'>
+                  </div>
+                  <div class='col-3 messageSender'>
+                    <p>` + channelName + `</p>
+                  </div>
+                  <div class='col-6 messageContent'>
+                    <p>` + sender + ': ' + message + `</p>
+                  </div>
+                  <div class='col-2 messageTime'>
+                    <p>` + time + `</p>
+                  </div>
+                </div>
+              </a>`
+    $('#nav-unassigned .dragula-container').append(text);
 }
 
 
@@ -108,18 +108,11 @@ function timestampToDate(timestamp) {  // reformat time
     // Seconds part from the timestamp
     var seconds = "0" + date.getSeconds();
 
-    // Will display time in 10:30:23 format
+    // Will display time in MONTH DAY 10:30:23 format
     var formattedTime = month + " " + day + " " + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     return formattedTime
 }
 
-//Object.keys(channelDictionary).length
-            // Loop through all channel names
-            // for (var i = 0; i < 5; i++) {
-            //     let key = Object.keys(channelDictionary)[i];
-            //     let channelName = channelDictionary[key];
-            //     await addSlackConversations(token, key, channelName, userDictionary);
-            // }
 function retrieveSingleSlackUser(userDictionary, userID) {
     var length = Object.keys(userDictionary).length
     for (var i = 0; i < length; i++) {
@@ -197,3 +190,5 @@ function retrieveSlackChannels(token) {
         xhr.send();
     })
 }
+
+});
