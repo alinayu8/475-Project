@@ -68,7 +68,7 @@ async function addSlackConversations(token,channelID,channelName,userDictionary)
         var unread = '';
     }
     let sender = retrieveSingleSlackUser(userDictionary, mssgUser);
-    var text = `<a class='message' href='https://messenger.com'>
+    var text = `<a class='message' href='https://my.slack.com/messages/` + channelID + `'>
                 <div class='row pl-3 pt-3 ` + unread + ` pr-3 pb-3 d-flex align-items-center border-bottom border-dark'>
                   <div class='col-1 messagePlatform'>
                     <i class='fa fa-grip-vertical fa-lg mr-2 messageGrip hidden' aria-hidden='true'></i>
