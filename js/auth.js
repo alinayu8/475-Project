@@ -191,4 +191,9 @@ function retrieveSlackChannels(token) {
     })
 }
 
+    // var sum = 0;
+    // $(".unread").each(function() {
+    //     sum += 1;
+    //     console.log(sum);
+    // });
 });
