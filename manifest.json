@@ -9,7 +9,8 @@
       "js/background.js",
       "js/jquery.js",
       "js/popper.min.js",
-      "js/bootstrap.min.js"
+      "js/bootstrap.min.js",
+      "js/gmailapi3.js"
     ],
     "persistent": false
   },
@@ -28,6 +29,17 @@
   "manifest_version": 2,
   "permissions": [
     "activeTab", 
-    "tabs"
-  ]
+    "tabs",
+    "identity"
+  ],
+
+  "oauth2": {
+    "client_id": "17382193749-ohr12l4hpuefgsm0nqevnpugdoje5i7u.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ]
+  },
+  "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'"
+  
+
 }
