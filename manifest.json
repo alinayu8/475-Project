@@ -30,11 +30,13 @@
   "permissions": [
     "activeTab", 
     "tabs",
-    "identity"
+    "identity",
+    "https://www.googleapis.com/*",
+    "https://accounts.google.com/*"
   ],
 
   "oauth2": {
-    "client_id": "17382193749-ohr12l4hpuefgsm0nqevnpugdoje5i7u.apps.googleusercontent.com",
+    "client_id": "17382193749-v4fjpqnac4g1h9k9vdd2oroa2mndek2u.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/gmail.readonly"
     ]
