@@ -2,7 +2,7 @@
   "name": "Getting Started Example",
   "version": "1.0",
   "description": "Build an Extension!",
-  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "permissions": ["activeTab", "declarativeContent", "storage", "identity", "tabs"],
   "options_page": "options.html",
   "background": {
     "scripts": [
@@ -27,6 +27,7 @@
     "128": "images/get_started128.png"
   },
   "manifest_version": 2,
+
   "permissions": [
     "activeTab", 
     "tabs",
@@ -41,7 +42,6 @@
       "https://www.googleapis.com/auth/gmail.readonly"
     ]
   },
-  "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'"
-  
 
+  "content_security_policy": "script-src 'self' https://apis.google.com https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js https://code.jquery.com/jquery-3.3.1.slim.min.js; object-src 'self'"
 }
