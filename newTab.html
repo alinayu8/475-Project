@@ -56,10 +56,30 @@
 
   <div class="container">
     <div class="row p-3">
-      <div class="col-md-12 d-flex p-0">
+      <div class="col-md-8 d-flex p-0">
         <div class="greeting pt-3">
-          <h1>Good Evening, Dylan.</h1>
+          <h1>
+            <span class="timeOfDay"></span>
+            <span class="name"></span>
+          </h1>
           <h3>You have 7 unread messages.</h3>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex p-5">
+        <a class="btn btn-primary icon dndIcon">
+          <i class="fas fa-moon fa-2x pt-1 pb-1"></i>
+        </a>
+      </div>
+      <div class="col-md-2 d-flex p-5">
+        <a class="btn btn-primary icon settingsIcon" data-toggle="collapse" href="#collapseExample" role="button"
+          aria-expanded="false" aria-controls="collapseExample">
+          <i class="fas fa-user-cog fa-2x pt-1 pb-1"></i>
+        </a>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim
+            keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+          </div>
         </div>
       </div>
       <!-- temporary Slack auth button -->

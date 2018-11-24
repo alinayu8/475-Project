@@ -2,7 +2,7 @@
 
 body {
   /* background-color: #6B2822; */
-  background: url(https://source.unsplash.com/collection/286797/) no-repeat center center fixed;
+  background: url(https://source.unsplash.com/collection/347194/) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -14,6 +14,16 @@ body {
   min-width: 1;
 }
 
+.btn {
+  background-color: transparent;
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: #fff;
+  color: #000;
+}
+
 /* Type Classes */ 
 .greeting {
     
@@ -23,6 +33,19 @@ body {
   filter: drop-shadow(0px 0px 20px #000);
   font-size: 42pt;
   font-weight: 400;
+}
+
+.greeting h1 > input {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  outline: 1pt solid white;
+  outline-offset: 5px;
+  filter: drop-shadow(0px 0px 15px #000);
+  /* max-width: 200px; */
+}
+
+.greeting h1 > input:focus {
 }
 
 .greeting h3 {
@@ -119,6 +142,21 @@ nav .nav-tabs > a.nav-dragOver {
 
 .hidden {
   display: none;
+}
+
+/* Settings */
+.icon {
+  color: #fff;
+  background-color: transparent;
+  border-radius: 10px;
+  border-color: #fff;
+  filter: drop-shadow(0px 0px 5px #000);
+}
+
+.icon:hover {
+  color: #333;
+  background-color: #fff;
+  border-color: #fff;
 }
 
 /* Popup Specific */
