@@ -160,32 +160,34 @@ function retrieveURL(token) {
 
 async function updateSlackConversations(token,channelID,channelName) {
     const slackArray = await retrieveSlackMessages(channelID, token);
-    if (slackArray != ['/','/','/','/']) {
-        const workspaceURL = await retrieveURL(token);
+    if (slackArray[2] != "/" && typeof slackArray[1] !== 'undefined') {
+        const workspaceDetails = await retrieveURL(token);
+        //let workspaceName = workspaceDetails[0];
+        let workspaceURL = workspaceDetails[1];
+
         let message = slackArray[0];
         let mssgUser = slackArray[1];
         let time = slackArray[2];
         let unreadCount = slackArray[3];
-        if (unreadCount > 0) {
-            var unread = ' unread ';
-        } else {
-            var unread = '';
+        if (unreadCount == 0) {
+            $( 'a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .align-items-center').removeClass("unread");
         }
 
-        const sender = await findUserName(mssgUser);
-
-        var mssg_sender = sender + ': ' + message
-        var og_mssg_sender = $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageContent').text().trim();
         var og_time = $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageTime').text().trim();
+        console.log(time);
+        console.log(og_time);
+        console.log(time != og_time);
+        if (time != og_time) {
+            console.log(typeof time);
+            console.log(typeof og_time);
+            const sender = await findUserName(mssgUser);
+            var mssg_sender = sender + ': ' + message
 
-        if (mssg_sender != og_mssg_sender) {
             // Replace sender and message with this href
             $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageContent').html('<p>' + mssg_sender + '</p>');
-        }
-
-        if (time != og_time) {
             // Replace time with this href
             $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageTime').html('<p>' + time + '</p>');
+            $( 'a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .align-items-center').addClass("unread");
         }
     }
 }
