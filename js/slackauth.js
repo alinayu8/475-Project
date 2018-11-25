@@ -11,7 +11,7 @@ $(document).ready(function() {
 
         var client_id = '347262053333.468176603908';
         var enc_client_secret = 'MGIwZDBkMmQ1YzNkZTE2ZGFiMmFiODBjODY5YjY1N2Y='; //encoded
-        var scopes = 'channels:history,groups:history,channels:read,im:history,mpim:history,users:read,team:read';
+        var scopes = 'channels:history,groups:history,channels:read,im:read,im:history,users:read,team:read';
         var auth_url = "https://slack.com/oauth/authorize?client_id=" + client_id + "&scope=" + scopes + "&response_type=token";
         
         chrome.identity.launchWebAuthFlow({'url':auth_url,'interactive':true}, function(redirectUri){
@@ -41,13 +41,10 @@ $(document).ready(function() {
     function saveSlackToken(retrievedToken) { //retrieved token is the token passed to to this function upon auth completion
         chrome.storage.sync.get('slackUserToken', function(result) { //saves the token to the cloud 
             if (typeof result.slackUserToken === 'undefined' || result.slackUserToken.length == 0) {
-                console.log('i came here');
                 var tokens = [retrievedToken];
             } else {
-                console.log('shouldnt be undefined' + result.slackUserToken);
                 var tokens = result.slackUserToken;
                 tokens.push(retrievedToken);
-                console.log(tokens.length);
             }
             //var tokens = undefined;
             chrome.storage.sync.set({'slackUserToken':tokens}, function() { //saves the token to the cloud
@@ -62,20 +59,19 @@ setInterval(checkSlack, 20000);
 
 function checkSlack() {
     chrome.storage.sync.get('slackUserToken', async function(result){ // retrieves token from user's Chrome options
-        console.log("DIS IT" + result.slackUserToken);
         if (typeof result.slackUserToken !== 'undefined') {
             let tokens = result.slackUserToken;
             for (var i = 0; i < tokens.length; i++) {
                 var token = tokens[i];
                 console.log(token);
-                //Retrieve dictionary of channels
-                const channelDictionary = await retrieveSlackChannels(token);
                 //Retrieve list of users
                 const userDictionary = await retrieveSlackUsers(token);
+                //Retrieve dictionary of channels
+                const channelDictionary = await retrieveSlackChannels(token);
 
                 // Loop through all channel names
-                for (var i = 0; i < Object.keys(channelDictionary).length; i++) {
-                    let key = Object.keys(channelDictionary)[i];
+                for (var j = 0; j < Object.keys(channelDictionary).length; j++) {
+                    let key = Object.keys(channelDictionary)[j];
                     let channelName = channelDictionary[key];
                     await updateSlackConversations(token, key, channelName);
                 }
@@ -92,11 +88,10 @@ $('#slack_mssgs').click(function() {
         var size = tokens.length;
         var token = tokens[size-1];
         console.log(token);
-        //Retrieve dictionary of channels
-        const channelDictionary = await retrieveSlackChannels(token);
         //Retrieve list of users
         const userDictionary = await retrieveSlackUsers(token);
-
+        //Retrieve dictionary of channels
+        const channelDictionary = await retrieveSlackChannels(token);
         // Loop through all channel names
         for (var i = 0; i < Object.keys(channelDictionary).length; i++) {
             let key = Object.keys(channelDictionary)[i];
@@ -109,31 +104,20 @@ $('#slack_mssgs').click(function() {
 
 async function addSlackConversations(token,channelID,channelName) {
     const slackArray = await retrieveSlackMessages(channelID, token);
-    let message = slackArray[0];
-    let mssgUser = slackArray[1];
-    let time = slackArray[2];
-    let unreadCount = slackArray[3];
-    if (unreadCount > 0) {
-        var unread = 'unread';
-    } else {
-        var unread = '';
-    }
-    
-    const workspaceDetails = await retrieveURL(token);
-    let workspaceName = workspaceDetails[0];
-    let workspaceURL = workspaceDetails[1];
-
-    // Sketch way of unwrapping the sender
-    chrome.storage.local.get('slackUsers', function(result) {
-        var users = result.slackUsers;
-        var length = Object.keys(users).length
-        for (var i = 0; i < length; i++) {
-            let key = Object.keys(users)[i];
-            if (key == mssgUser) {
-                var sender = users[key];
-            }
+    if (slackArray[2] != "/" && typeof slackArray[1] !== 'undefined') {
+        let message = slackArray[0];
+        let mssgUser = slackArray[1];
+        let time = slackArray[2];
+        let unreadCount = slackArray[3];
+        if (unreadCount > 0) {
+            var unread = 'unread';
+        } else {
+            var unread = '';
         }
-        
+        const workspaceDetails = await retrieveURL(token);
+        let workspaceName = workspaceDetails[0];
+        let workspaceURL = workspaceDetails[1];
+        const sender = await findUserName(mssgUser);
         var text = `<a class='message' href='https://` + workspaceURL + `.slack.com/messages/` + channelID + `'>
         <div class='row pl-3 pt-3 ` + unread + `pr-3 pb-3 d-flex align-items-center border-bottom border-dark'>
         <div class='col-1 messagePlatform'>
@@ -151,9 +135,9 @@ async function addSlackConversations(token,channelID,channelName) {
         </div>
         </div>
         </a>`
-        $('#nav-unassigned .dragula-container').append(text);
-    })
 
+        $('#nav-unassigned .dragula-container').append(text);
+    }
 }
 
 function retrieveURL(token) {
@@ -176,42 +160,34 @@ function retrieveURL(token) {
 
 async function updateSlackConversations(token,channelID,channelName) {
     const slackArray = await retrieveSlackMessages(channelID, token);
-    const workspaceURL = await retrieveURL(token);
-    let message = slackArray[0];
-    let mssgUser = slackArray[1];
-    let time = slackArray[2];
-    let unreadCount = slackArray[3];
-    if (unreadCount > 0) {
-        var unread = ' unread ';
-    } else {
-        var unread = '';
-    }
-
-    chrome.storage.local.get('slackUsers', function(result) {
-        var users = result.slackUsers;
-        var length = Object.keys(users).length
-        for (var i = 0; i < length; i++) {
-            let key = Object.keys(users)[i];
-            if (key == mssgUser) {
-                var sender = users[key];
-            }
+    if (slackArray != ['/','/','/','/']) {
+        const workspaceURL = await retrieveURL(token);
+        let message = slackArray[0];
+        let mssgUser = slackArray[1];
+        let time = slackArray[2];
+        let unreadCount = slackArray[3];
+        if (unreadCount > 0) {
+            var unread = ' unread ';
+        } else {
+            var unread = '';
         }
-      
-        
+
+        const sender = await findUserName(mssgUser);
+
         var mssg_sender = sender + ': ' + message
         var og_mssg_sender = $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageContent').text().trim();
         var og_time = $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageTime').text().trim();
 
         if (mssg_sender != og_mssg_sender) {
-        // Replace message with this href
-        $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageContent').html('<p>' + mssg_sender + '</p>');
+            // Replace sender and message with this href
+            $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageContent').html('<p>' + mssg_sender + '</p>');
         }
 
         if (time != og_time) {
-        // Replace message with this href
-        $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageTime').html('<p>' + time + '</p>');
+            // Replace time with this href
+            $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageTime').html('<p>' + time + '</p>');
         }
-    })
+    }
 }
 
 function timestampToDate(timestamp) {  // reformat time
@@ -238,33 +214,70 @@ function retrieveSlackMessages(channelID, token) {
         let url = "https://slack.com/api/channels.history?token="+token+"&channel="+channelID+"&unreads=true&count=1";
         let xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = async function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 let resp = JSON.parse(xhr.responseText);
-                //console.log(resp);
-                var text = resp['messages'][0]['text'];
-                var user = resp['messages'][0]['user'];
-                var ts = resp['messages'][0]['ts'];
-                var unread = resp['unread_count_display'];
-                var time = timestampToDate(ts);
-                chrome.storage.local.get('slackUsers', function(result) {
-                    var users = result.slackUsers;
-                    var length = Object.keys(users).length
-                    for (var i = 0; i < length; i++) {
-                        let key = Object.keys(users)[i];
-                        var sender = users[key];
-                        text = text.replace(key, sender);
-                    }
-                    resolve([text, user, time, unread])
-                })
+                if (resp['ok'] == true) {
+                    var text = resp['messages'][0]['text'];
+                    var user = resp['messages'][0]['user'];
+                    var ts = resp['messages'][0]['ts'];
+                    var unread = resp['unread_count_display'];
+                    var time = timestampToDate(ts);
+                    chrome.storage.local.get('slackUsers', function(result) {
+                        var users = result.slackUsers;
+                        var length = Object.keys(users).length
+                        for (var i = 0; i < length; i++) {
+                            let key = Object.keys(users)[i];
+                            var sender = users[key];
+                            text = text.replace(key, sender);
+                        }
+                        resolve([text, user, time, unread])
+                    })
+                } else {
+                    const mssg = await retrieveIMSlackMessages(channelID, token);
+                    resolve(mssg)
+                }
             }
         }
         xhr.send();
     })
 }
 
+function retrieveIMSlackMessages(channelID, token) {
+    return new Promise(function(resolve, reject) {
+        // Retrieve conversation history
+        let url = "https://slack.com/api/im.history?token="+token+"&channel="+channelID+"&unreads=true&count=1";
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                let resp = JSON.parse(xhr.responseText);
+                if (resp['messages'].length > 0) {
+                    var text = resp['messages'][0]['text'];
+                    var user = resp['messages'][0]['user'];
+                    var ts = resp['messages'][0]['ts'];
+                    var unread = resp['unread_count_display'];
+                    var time = timestampToDate(ts);
+                    chrome.storage.local.get('slackUsers', function(result) {
+                        var users = result.slackUsers;
+                        var length = Object.keys(users).length
+                        for (var i = 0; i < length; i++) {
+                            let key = Object.keys(users)[i];
+                            var sender = users[key];
+                            text = text.replace(key, sender);
+                        }
+                        resolve([text, user, time, unread])
+                    })
+                } else {
+                    resolve(['/', '/', '/', '/'])
+                }
+            }
+        }
+        xhr.send();
+    })
+}
 
-function retrieveSlackUsers(token, user) {
+function retrieveSlackUsers(token) {
     return new Promise(function(resolve, reject) {
         // Retrieve users in conversation
         let url = "https://slack.com/api/users.list?token="+token;
@@ -282,11 +295,10 @@ function retrieveSlackUsers(token, user) {
                 //is this even legal
                 chrome.storage.local.get('slackUsers', function(result) {
                     // Notify that we saved.
-                    console.log(result.slackUsers);
                     var allUsers = Object.assign({}, usersDictionary, result.slackUsers);
                     chrome.storage.local.set({slackUsers: allUsers}, function() { 
                         // Notify that we saved.
-                        console.log('users saved:');
+                        console.log('All users saved:');
                     }); 
                     resolve(allUsers);
                 }); 
@@ -298,9 +310,9 @@ function retrieveSlackUsers(token, user) {
 }
 
 function retrieveSlackChannels(token) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(async function(resolve, reject) {
+        const slackIMs = await retrieveSlackIMs(token);
         // Retrieve channel name
-        let testChannel = "CA6SB5GDA";
         let url = "https://slack.com/api/channels.list?token="+token+"&exclude_members=true";
         const xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
@@ -313,11 +325,50 @@ function retrieveSlackChannels(token) {
                         let id = resp['channels'][i]['id'];
                         channelDictionary[id] = name;
                     }
-                    resolve(channelDictionary);
+                    var allConvos = Object.assign({}, channelDictionary, slackIMs);
+                    resolve(allConvos);
                 }
             }
         xhr.send();
     })
 }
 
+    function retrieveSlackIMs(token) {
+        return new Promise(function(resolve, reject) {
+            // Retrieve channel name
+            let url = "https://slack.com/api/im.list?token="+token;
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+                xhr.onreadystatechange = async function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        let resp = JSON.parse(xhr.responseText);
+                        var imDictionary = {}
+                        for (var i = 0; i < resp['ims'].length; i++) {
+                            const user = await findUserName(resp['ims'][i]['user']);
+                            let id = resp['ims'][i]['id'];
+                            imDictionary[id] = user;
+                        }
+                        resolve(imDictionary);
+                    }
+                }
+            xhr.send();
+        })
+    }
+
+    function findUserName(userID) {
+        return new Promise(function(resolve, reject) {
+            chrome.storage.local.get('slackUsers', function(result) {
+                var users = result.slackUsers;
+                var length = Object.keys(users).length
+                for (var i = 0; i < length; i++) {
+                    let key = Object.keys(users)[i];
+                    var sender = users[key];
+                    if (key == userID) {
+                        resolve(sender);
+                    }
+                }
+            }); 
+        });
+    }
 });
+
