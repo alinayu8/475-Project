@@ -41,9 +41,11 @@ $(document).ready(function() {
             var size = tokens.length;
             var token = tokens[size-1]; // most recently added token
             // Retrieve and save list of users from API asynchronously
-            const userDictionary = await retrieveSlackUsers(token);
+            await retrieveSlackUsers(token);
             // Retrieve and save list of channels from API asynchronously
             const channelDictionary = await retrieveSlackChannels(token);
+            // Get and save all slack channels to Chrome cloud
+            await saveSlackChannels(channelDictionary);
             // Loop through all channel names
             for (var i = 0; i < Object.keys(channelDictionary).length; i++) {
                 let key = Object.keys(channelDictionary)[i];
@@ -54,7 +56,7 @@ $(document).ready(function() {
     });
     
     // Saves the token to the user's Chrome storage
-    function saveSlackToken(retrievedToken) { /
+    function saveSlackToken(retrievedToken) { 
         chrome.storage.sync.get('slackUserToken', function(result) { 
             if (typeof result.slackUserToken === 'undefined' || result.slackUserToken.length == 0) {
                 var tokens = [retrievedToken]; // initializing token array
@@ -113,8 +115,8 @@ $(document).ready(function() {
 
     ////////////////////////////// FOLLOWING FUNCTIONS ARE USED FOR UPDATING MESSAGES //////////////////////////////
 
-    // Continuously update messages every 20 seconds
-    setInterval(checkSlack, 20000);
+    // Continuously update messages every minute
+    setInterval(checkSlack, 60000);
 
     // Updates Slack messages
     function checkSlack() {
@@ -125,15 +127,36 @@ $(document).ready(function() {
                 for (var i = 0; i < tokens.length; i++) { // loop through all Slack accounts
                     var token = tokens[i];
                     // Retrieve and save list of users from API asynchronously
-                    const userDictionary = await retrieveSlackUsers(token);
+                    await retrieveSlackUsers(token);
                     // Retrieve and save list of channels from API asynchronously
                     const channelDictionary = await retrieveSlackChannels(token);
+                    // Get and save all slack channels to Chrome cloud, returns previous dictionary of slack channels
+                    const slackChannels = await saveSlackChannels(channelDictionary);
+                    var oldChannels = slackChannels[0]
+                    var newChannels = slackChannels[1]
+                    var channels = slackChannels[2]
 
-                    // Loop through all channel names
-                    for (var j = 0; j < Object.keys(channelDictionary).length; j++) {
-                        let key = Object.keys(channelDictionary)[j];
-                        let channelName = channelDictionary[key];
+                    // Loop through existing channel names
+                    for (var j = 0; j < Object.keys(channels).length; j++) {
+                        let key = Object.keys(channels)[j];
+                        let channelName = channels[key];
                         await updateSlackConversations(token, key, channelName);
+                        console.log("existing channel")
+                    }
+
+                    // Loop through new channel names
+                    for (var k = 0; k < Object.keys(newChannels).length; k++) {
+                        let key = Object.keys(newChannels)[k];
+                        let channelName = newChannels[key];
+                        await addSlackConversations(token, key, channelName);
+                        console.log("new channel")
+                    }
+
+                    // Loop through old channel names
+                    for (var l = 0; l < Object.keys(oldChannels).length; l++) {
+                        let key = Object.keys(oldChannels)[l];
+                        $('a[href*="'+ key +'"]').remove();
+                        console.log("old channel")
                     }
                 }
             }
@@ -143,34 +166,65 @@ $(document).ready(function() {
     // Instead of adding new HTML, simply update it
     async function updateSlackConversations(token,channelID,channelName) {
         const slackArray = await retrieveSlackMessages(channelID, token);
-        if (slackArray[2] != "/" && typeof slackArray[1] !== 'undefined') { // if conversation is empty
+        if (slackArray[2] != "/" && typeof slackArray[1] !== 'undefined') { // if conversation is empty, do not add
+            console.log('existing channel ' + channelID + ' that is non-empty');
             const workspaceDetails = await retrieveURL(token);
-            //let workspaceName = workspaceDetails[0];
+            let workspaceName = workspaceDetails[0];
             let workspaceURL = workspaceDetails[1];
 
             let message = slackArray[0];
             let mssgUser = slackArray[1];
             let time = slackArray[2];
             let unreadCount = slackArray[3];
+            const sender = await findUserName(mssgUser);
+
+            if (unreadCount > 0) {
+                var unread = 'unread';
+                // Add unread attribute with this href
+                $('a[href*="'+ channelID +'"] .align-items-center').addClass("unread");
+            } else {
+                var unread = '';
+                // Remove unread attribute with this href
+                $( 'a[href*="'+ channelID +'"] .align-items-center').removeClass("unread");
+            }
 
             var og_time = $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageTime').text().trim();
+            var og_time_length = $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"]').length;
+            
+            if (og_time_length == 0) { // Check if message didn't exist before, if not, then must populate
+                console.log('channel is populated now');
+        
+                var text = `<a class='message' href='https://` + workspaceURL + `.slack.com/messages/` + channelID + `'>
+                <div class='row pl-3 pt-3 ` + unread + `pr-3 pb-3 d-flex align-items-center border-bottom border-dark'>
+                <div class='col-1 messagePlatform'>
+                    <i class='fa fa-grip-vertical fa-lg mr-2 messageGrip hidden' aria-hidden='true'></i>
+                    <img class='messageIcon' src='./assets/icons/slack.png'>
+                </div>
+                <div class='col-3 messageSender'>
+                    <p>` + workspaceName + ` > ` + channelName + `</p>
+                </div>
+                <div class='col-6 messageContent'>
+                    <p>` + sender + ': ' + message + `</p>
+                </div>
+                <div class='col-2 messageTime'>
+                    <p>` + time + `</p>
+                </div>
+                </div>
+                </a>`
 
-            // check if message time is different
-            if (time != og_time) {
-                const sender = await findUserName(mssgUser);
+                $('#nav-unassigned .dragula-container').append(text);
+            } else if (time != og_time) { // Check if message time is different
+                console.log('updating channel');
                 var mssg_sender = sender + ': ' + message
 
-                // Replace sender and message with this href
-                $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageContent').html('<p>' + mssg_sender + '</p>');
-                // Replace time with this href
-                $('a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .messageTime').html('<p>' + time + '</p>');
-                // Add unread attribute with this href
-                $( 'a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .align-items-center').addClass("unread");
+                // // Replace sender and message with this href
+                $('a[href*="'+ channelID +'"] .messageContent').html('<p>' + mssg_sender + '</p>');
+                // // Replace time with this href
+                $('a[href*="'+ channelID +'"] .messageTime').html('<p>' + time + '</p>');
             }
-
-            if (unreadCount == 0) { // remove unread class if no longer unread
-                $( 'a[href^="https://' + workspaceURL + '.slack.com/messages/' + channelID + '"] .align-items-center').removeClass("unread");
-            }
+        } else { // if conversations is empty, remove HTML from text thingy
+            console.log('existing channel ' + channelID + ' that no longer has messages');
+            $('a[href*="'+ channelID +'"]').remove();
         }
     }
 
@@ -197,7 +251,7 @@ $(document).ready(function() {
                         // Combine currently saved Slack users with new users
                         var allUsers = Object.assign({}, usersDictionary, result.slackUsers);
                         chrome.storage.local.set({slackUsers: allUsers}, function() { 
-                            console.log('All users saved:');
+                            console.log('All users saved');
                         }); 
                         resolve(allUsers);
                     }); 
@@ -325,6 +379,31 @@ $(document).ready(function() {
         })
     }
 
+    // Saving Slack Channels to cloud, returns old channels and new channels
+    function saveSlackChannels(channelDictionary) {
+        return new Promise(function(resolve, reject) {
+            chrome.storage.local.get('slackChannels', function(result) {
+                if (typeof result.slackChannels === 'undefined') {
+                    var allChannels = channelDictionary;
+                    var oldChannels = {}
+                    var newChannels = {}
+                    var sameChannels = {}
+                } else {
+                    var ogChannels = result.slackChannels;
+                    var oldChannels = difference(ogChannels, channelDictionary)
+                    var newChannels = difference(channelDictionary, ogChannels)
+                    var sameChannels = difference(channelDictionary, newChannels)
+                    var allChannels = Object.assign({}, newChannels, ogChannels);
+                }
+
+                chrome.storage.local.set({slackChannels: allChannels}, function() { 
+                    console.log('All channels saved');
+                });
+                resolve([oldChannels, newChannels, sameChannels]);
+            });
+        });
+    }
+
     // Reformat time
     function timestampToDate(timestamp) {
         var date = new Date(timestamp*1000);
@@ -378,6 +457,17 @@ $(document).ready(function() {
                 }
             }); 
         });
+    }
+
+    // Difference between sets function
+    function difference(setA, setB) {
+        var diff = jQuery.extend(true, {}, setA);
+        var length = Object.keys(setB).length
+        for (var i = 0; i < length; i++) {
+            let key = Object.keys(setB)[i];
+            delete diff[key];
+        }
+        return diff;
     }
 });
 
