@@ -1,7 +1,7 @@
-// Uncomment the below line to restart the signing up process
-// Make sure to recomment it and reload the page before proceeding
+// Uncomment the 2 lines below to restart the signing up process
+// Make sure to recomment them and reload the page before proceeding
 
-//  localStorage.clear()
+// localStorage.clear()
 // chrome.storage.sync.clear()
 
 // UPDATE FUNCTIONS
@@ -10,14 +10,23 @@ window.onload = update_page()
 
 function update_page() {
   updateCover()
-  if (window.location.pathname == "/start.html") {
-    setUpStartPage()
+  // var firstTime = first_time(function(result) {
+  //   return result
+  // });
+  // console.log(firstTime)
+  if (inSetUp()) {
+    console.log("in set up")
+    setUpPages()
     return
   }
-  else if (first_time()) { setUp() }
+  else if (first_time()) { 
+    console.log("setting up")
+    setUp() 
+  }
   else if (window.location.pathname == "/newTab.html") {
     update_badges()
     update_copy()
+    update_dnd()
   }
 }
 
@@ -25,18 +34,29 @@ function update_page() {
 
 // Check if this is their first time using the app
 
+// Since getting variables from chrome storage is an asnc call
+// we save "name" in chrome and local storage, and check if name 
+// has been set in local storage to determine if set up has occured
 function first_time() {
-  let result = chrome.storage.sync.get(['name'], function(result) {
-    console.log('Name is currently' + result.name)
-  })
-  var name = result.name
-  if (name == null || name == "") { return true }
+  // chrome.storage.sync.get(['name'], function(result) {
+  //   console.log('Name is currently' + result.name)
+  //   console.log(result.name == null)
+  //   if (result.name == null) { 
+  //     console.log("first time")
+  //     var firstTime = true 
+  //   } else {
+  //     console.log("not first time")
+  //     var firstTime = false
+  //   }
+  //   console.log(firstTime)
+  //   callback(firstTime)
+  // })
+  var name = localStorage.getItem("name")
+  if (name == null) {return true}
   return false
 }
 
 function setUp() {
-  name = "";
-  localStorage.setItem("name", name)
   window.location = "start.html"
 }
 
@@ -52,19 +72,38 @@ function inSetUp() {
   return false
 }
 
+function setUpPages() {
+  let path = window.location.pathname
+  if (path == "/start.html") {setUpStartPage()}
+  else if (path == "/start_accounts.html") {setUpAccountsPage()}
+}
+
 function setUpStartPage() {
   document.getElementsByClassName("nameInput")[0].focus()
   document.getElementsByClassName("nameSaveBtn")[0].addEventListener('click', saveName)
 }
 
+function setUpAccountsPage() {
+  document.getElementsByClassName("nameBackBtn")[0].addEventListener('click', function() {
+    window.location = "start.html"
+  })
+  document.getElementsByClassName("accountSaveBtn")[0].addEventListener('click', saveAccounts);
+}
+
 function saveName() {
   var name = document.getElementsByClassName("nameInput")[0].value
-  // localStorage.setItem("name", name)
   chrome.storage.sync.set({'name':name}, function() { //saves the name to the cloud
     console.log('Name saved: ' + name);
-  });
+  }); 
+  localStorage.setItem("name", name)
   if (inSetUp()) {
     window.location = "start_accounts.html"
+  }
+}
+
+function saveAccounts() {
+  if (inSetUp()) {
+    window.location = "newTab.html"
   }
 }
 
@@ -109,7 +148,7 @@ function update_tab_badge(tab) {
 function update_badges_copy() {
   total_unread = document.getElementsByClassName('unread').length
   document.title = `(${total_unread}) Cluster`
-  greetingMessage = document.getElementsByClassName('greeting')[0].getElementsByTagName('h3')[0]
+  greetingMessage = document.getElementsByClassName('messagesCountHeader')[0]
   if (total_unread > 1) {
     greetingMessage.innerHTML = `You have ${total_unread} unread messages.`
   } else if (total_unread == 1) {
@@ -129,8 +168,11 @@ function update_greeting() {
   headerTimeOfDay = header.getElementsByClassName("timeOfDay")[0]
   greeting = getGreeting()
   headerTimeOfDay.innerHTML = `Good ${greeting},`
-  headerName = header.getElementsByClassName("name")[0]
-  headerName.innerHTML = `${localStorage.getItem("name")}.`
+  chrome.storage.sync.get(['name'], function(result) {
+    console.log('Name is currently' + result.name)
+    headerName = header.getElementsByClassName("name")[0]
+    headerName.innerHTML = `${result.name}.`
+  })
 }
 
 function getGreeting() {
@@ -144,4 +186,47 @@ function getGreeting() {
     greeting = "Evening"
   }
   return greeting
+}
+
+// Add event listeners for do not disturb
+
+function update_dnd() {
+  let dndButton = document.getElementsByClassName('dndIcon')[0]
+  dndButton.addEventListener('click', updateDndButton)
+  chrome.storage.sync.get(['dnd'], function(result) {
+    console.log('dnd is currently ' + result.dnd)
+    if (result.dnd == "true") {hideMessages()}
+    else {showMessages()}
+  })
+}
+
+function updateDndButton() {
+  let dndButton = document.getElementsByClassName('dndIcon')[0]
+  if (dndButton.classList.contains('dndMode')) {
+    chrome.storage.sync.set({'dnd': "false"}, function() { //saves the name to the cloud
+      console.log('dnd saved: ' + "false");
+    }); 
+    showMessages()
+  } else {
+    chrome.storage.sync.set({'dnd': "true"}, function() { //saves the name to the cloud
+      console.log('dnd saved: ' + "true");
+    });
+    hideMessages()
+  }
+}
+
+function showMessages() {
+  dndButton = document.getElementsByClassName('dndIcon')[0]
+  dndButton.classList.remove('dndMode')
+  document.getElementsByClassName('messagesCountHeader')[0].style.display = 'block';
+  document.getElementsByClassName('messageTabs')[0].style.display = 'block';
+  document.getElementsByClassName('messageBox')[0].style.display = 'block';
+}
+
+function hideMessages() {
+  dndButton = document.getElementsByClassName('dndIcon')[0]
+  dndButton.classList.add('dndMode')
+  document.getElementsByClassName('messagesCountHeader')[0].style.display = 'none';
+  document.getElementsByClassName('messageTabs')[0].style.display = 'none';
+  document.getElementsByClassName('messageBox')[0].style.display = 'none';
 }

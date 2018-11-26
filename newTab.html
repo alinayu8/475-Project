@@ -44,10 +44,10 @@
   <!-- Boostrap -->
   <script src="./js/popper.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
-  <script src="./js/slackauth.js"></script>
-  <script src="./js/saveconvos.js"></script>
 
   <!-- General App Scripts -->
+  <script src="./js/slackauth.js"></script>
+  <script src="./js/saveconvos.js"></script>
 
   <!-- %%%% END SCRIPTS %%%% -->
 
@@ -63,25 +63,24 @@
             <span class="timeOfDay"></span>
             <span class="name"></span>
           </h1>
-          <h3>You have 7 unread messages.</h3>
+          <h3 class="messagesCountHeader">You have 7 unread messages.</h3>
         </div>
       </div>
-      <div class="col-md-2 d-flex p-5">
+      <div class="col-md-2 d-flex pt-5 pb-5 pl-5 pr-2 justify-content-end">
         <a class="btn btn-primary icon dndIcon">
-          <i class="fas fa-moon fa-2x pt-1 pb-1"></i>
+          <i class="fas fa-minus-circle fa-2x pt-1 pb-1"></i>
         </a>
       </div>
-      <div class="col-md-2 d-flex p-5">
-        <a class="btn btn-primary icon settingsIcon" data-toggle="collapse" href="#collapseExample" role="button"
-          aria-expanded="false" aria-controls="collapseExample">
+      <div class="col-md-2 d-flex pt-5 pb-5 pl-0 pr-5">
+        <a class="btn btn-primary icon settingsIcon" href="/start_accounts.html" role="button">
           <i class="fas fa-user-cog fa-2x pt-1 pb-1"></i>
         </a>
-        <div class="collapse" id="collapseExample">
+        <!-- <div class="collapse" id="collapseExample">
           <div class="card card-body">
             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim
             keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
           </div>
-        </div>
+        </div> -->
       </div>
       <!-- temporary Slack auth button -->
       <button id="slack_auth" class="btn btn-primary ladda-button" data-style="zoom-in">
@@ -387,8 +386,8 @@
 
     <!-- Local Scripts -->
     <script src="./js/dragula.min.js"></script>
-    <script src="./js/dragging.js"></script>
     <script src="./js/updates.js"></script>
+    <script src="./js/dragging.js"></script>
 </body>
 
 </html>

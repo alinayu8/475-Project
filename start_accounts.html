@@ -44,9 +44,10 @@
   <!-- Boostrap -->
   <script src="./js/popper.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
-  <script src="./js/auth.js"></script>
 
   <!-- General App Scripts -->
+  <script src="./js/slackauth.js"></script>
+  <script src="./js/saveconvos.js"></script>
 
   <!-- %%%% END SCRIPTS %%%% -->
 
@@ -62,12 +63,38 @@
           <h3>Cluster puts all of your messages in one location.</br>
             To get started please sign into your accounts.
           </h3>
-          <button id="slack_auth" class="btn btn-primary ladda-button mt-2" data-style="zoom-in">
-            <span class="ladda-label">Slack Auth (temp)</span>
-          </button>
           <div class="row">
-            <button class="btn btn-default nameSaveBtn border border-light m-3">Back</button>
-            <button class="btn btn-default nameSaveBtn border border-light ml-1 mt-3 mr-3 mb-3">Continue</button>
+            <div class="card m-3 p-2" style="width: 18rem;">
+              <img class="card-img-top" src="assets/icons/gmail_square.png" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Gmail</h5>
+                <button id="" class="btn btn-primary ladda-button" data-style="zoom-in">
+                  <span class="ladda-label">Login</span>
+                </button>
+              </div>
+            </div>
+            <div class="card m-3 p-2" style="width: 18rem;">
+              <img class="card-img-top" src="assets/icons/slack.png" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Slack</h5>
+                <button id="slack_auth" class="btn btn-primary ladda-button" data-style="zoom-in">
+                  <span class="ladda-label">Login</span>
+                </button>
+              </div>
+            </div>
+            <div class="card m-3 p-2" style="width: 18rem;">
+              <img class="card-img-top" src="assets/icons/groupme.png" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Groupme</h5>
+                <button id="" class="btn btn-primary ladda-button" data-style="zoom-in">
+                  <span class="ladda-label">Login</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn btn-default nameBackBtn border border-light m-3">Back</button>
+            <button class="btn btn-default accountSaveBtn border border-light ml-1 mt-3 mr-3 mb-3">Continue</button>
           </div>
         </div>
       </div>
