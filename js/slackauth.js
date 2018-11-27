@@ -374,7 +374,7 @@ $(document).ready(function() {
         })
     }
 
-    ////////////////////////////// FOLLOWING FUNCTIONS ARE USED FOR OTHER FUNCTIONS //////////////////////////////
+    ////////////////////////////// FOLLOWING FUNCTIONS ARE GENERAL //////////////////////////////
 
     // Reformat time
     function timestampToDate(timestamp) {
@@ -394,8 +394,6 @@ $(document).ready(function() {
 
         return formattedTime
     }
-
-    
 
     // Find particular name using user ID from Chrome cloud storage
     function findUserName(userID) {

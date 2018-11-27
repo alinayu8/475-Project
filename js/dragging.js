@@ -11,6 +11,13 @@ var buffy = dragula({
   }, 
 })
 
+function updateMessages() {
+  chrome.storage.local.get('content', function(result) {
+    $("#nav-tabContent").html(result.content);
+    updateMessageEvents()
+  });
+}
+
 function updateMessageEvents() {
   console.log("updating message events")
   Array.from(document.getElementsByClassName("message")).forEach(el => {
@@ -29,7 +36,7 @@ function updateMessageEvents() {
   });
 }
 
-updateMessageEvents()
+updateMessages()
 
 
 // function messageHover(el) {
