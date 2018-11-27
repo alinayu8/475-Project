@@ -1,9 +1,9 @@
 //Reloading all convos before open window - comment out if you want a fresh UI
-// $(window).on("load", function () {
-//     chrome.storage.local.get('content', function(result) {
-//         $("#nav-tabContent").html(result.content);
-//     });
-// });
+$(window).on("load", function () {
+    chrome.storage.local.get('content', function(result) {
+        $("#nav-tabContent").html(result.content);
+    });
+});
 
 // before close window
 $(window).on("unload", function(e) {
