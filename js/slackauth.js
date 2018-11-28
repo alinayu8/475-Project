@@ -9,13 +9,14 @@ $(document).ready(function() {
 
     // Get Slack access token
     function authenticateSlack() {
-        var redirectUri = "https://gifolagmeampojmmieheifnieomimglm.chromiumapp.org/"
+        var redirectUri = "https://pobjdimebdonkghjachofmnflfjmmmgl.chromiumapp.org/"
         var client_id = '347262053333.468176603908';
         var enc_client_secret = 'MGIwZDBkMmQ1YzNkZTE2ZGFiMmFiODBjODY5YjY1N2Y='; //encoded
         var scopes = 'channels:history,groups:history,channels:read,im:read,im:history,users:read,team:read';
         var auth_url = "https://slack.com/oauth/authorize?client_id=" + client_id + "&scope=" + scopes + "&response_type=token";
         
         chrome.identity.launchWebAuthFlow({'url':auth_url,'interactive':true}, function(redirectUri){
+            var redirectUri = "https://pobjdimebdonkghjachofmnflfjmmmgl.chromiumapp.org/"
              console.log("Authenticating through " + redirectUri);
 
              // Getting Verification code
