@@ -9,16 +9,14 @@ $(document).ready(function() {
 
     // Get Slack access token
     function authenticateSlack() {
-        //var redirectUri = chrome.runtime.id;
-        var redirectUri = "https://" + chrome.runtime.id + ".chromiumapp.org/"
-        console.log(redirectUri)
+        var redirectUri = "https://gifolagmeampojmmieheifnieomimglm.chromiumapp.org/"
         var client_id = '347262053333.468176603908';
         var enc_client_secret = 'MGIwZDBkMmQ1YzNkZTE2ZGFiMmFiODBjODY5YjY1N2Y='; //encoded
         var scopes = 'channels:history,groups:history,channels:read,im:read,im:history,users:read,team:read';
         var auth_url = "https://slack.com/oauth/authorize?client_id=" + client_id + "&scope=" + scopes + "&response_type=token";
         
-        chrome.identity.launchWebAuthFlow({'url':auth_url,'interactive':true}, function(){
-            console.log("Authenticating through " + redirectUri);
+        chrome.identity.launchWebAuthFlow({'url':auth_url,'interactive':true}, function(redirectUri){
+             console.log("Authenticating through " + redirectUri);
 
              // Getting Verification code
              var codeurl = new URL(redirectUri);
@@ -44,7 +42,6 @@ $(document).ready(function() {
     // Saves the token to the user's Chrome storage (well, first gets the existing slack token)
    function saveSlackToken(retrievedToken) { 
         chrome.storage.sync.get('slackUserToken', async function(result) { 
-            console.log(retrievedToken)
             if (typeof result.slackUserToken === 'undefined' || result.slackUserToken.length == 0) {
                 var tokens = [retrievedToken]; // initializing token array
             } else {
