@@ -9,7 +9,8 @@ $(document).ready(function() {
 
     // Get Slack access token
     function authenticateSlack() {
-        var redirectUri = "https://gifolagmeampojmmieheifnieomimglm.chromiumapp.org/"
+        //var redirectUri = "https://gifolagmeampojmmieheifnieomimglm.chromiumapp.org/"
+        var redirectUri = "https://" + chrome.runtime.id + ".chromiumapp.org/"
         var client_id = '347262053333.468176603908';
         var enc_client_secret = 'MGIwZDBkMmQ1YzNkZTE2ZGFiMmFiODBjODY5YjY1N2Y='; //encoded
         var scopes = 'channels:history,groups:history,channels:read,im:read,im:history,users:read,team:read';
