@@ -5,6 +5,9 @@
 // chrome.storage.sync.clear()
 
 // UPDATE FUNCTIONS
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
 window.onload = update_page()
 

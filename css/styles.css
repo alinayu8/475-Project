@@ -2,7 +2,7 @@
 
 body {
   /* background-color: #6B2822; */
-  background: url(https://source.unsplash.com/collection/311028/) no-repeat center center fixed;
+  background: url(https://source.unsplash.com/collection/151521/) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -193,6 +193,17 @@ nav .nav-tabs > a.nav-dragOver {
 
 .card img {
   border-radius: 15px;
+}
+
+.tooltip-inner {
+  color: #fff;
+  border: 1pt solid white;
+  background-color: transparent;
+  filter: drop-shadow(0px 0px 5px #000);
+}
+
+.tooltip.bs-tooltip-bottom .arrow:before {
+  border-bottom-color: #fff !important;
 }
 
 /* Popup Specific */
