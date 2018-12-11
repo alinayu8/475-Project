@@ -44,6 +44,7 @@
   <!-- Boostrap -->
   <script src="./js/popper.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
+<<<<<<< HEAD
   <script src="./js/bootstrap.min.js"></script>
   <script src="./js/gmailapi4.js"></script> 
   <script src="https://apis.google.com/js/client.js"></script>
@@ -51,8 +52,12 @@
 
   <!-- GMAIL AUTH AND API SCRIPTS -->
   <script src="./js/auth.js"></script>
+=======
+>>>>>>> df5e652e59a0e89dface4c68ec77e2c97893c7cd
 
   <!-- General App Scripts -->
+  <script src="./js/slackauth.js"></script>
+  <script src="./js/refreshconvos.js"></script>
 
   <!-- %%%% END SCRIPTS %%%% -->
 
@@ -69,18 +74,44 @@
 
   <div class="container">
     <div class="row p-3">
-      <div class="col-md-12 d-flex p-0">
+      <div class="col-md-8 d-flex p-0">
         <div class="greeting pt-3">
-          <h1>Good Evening, Obeeeeezy.</h1>
-          <h3>You have 7 unread messages.</h3>
+
+          <h1>
+            <span class="timeOfDay"></span>
+            <span class="name"></span>
+          </h1>
+          <h3 class="messagesCountHeader">You have 7 unread messages.</h3>
+
         </div>
       </div>
+      <div class="col-md-2 d-flex pt-5 pb-5 pl-5 pr-2 justify-content-end">
+        <a class="btn btn-primary icon dndIcon">
+          <i class="fas fa-minus-circle fa-2x pt-1 pb-1"></i>
+        </a>
+      </div>
+      <div class="col-md-2 d-flex pt-5 pb-5 pl-0 pr-5">
+        <a class="btn btn-primary icon settingsIcon" href="/start_accounts.html" role="button">
+          <i class="fas fa-user-cog fa-2x pt-1 pb-1"></i>
+        </a>
+        <!-- <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim
+            keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+          </div>
+        </div> -->
+      </div>
       <!-- temporary Slack auth button -->
+
       <button id="slack_auth" class="btn btn-primary ladda-button " data-style="zoom-in">
+
+      <!-- <button id="slack_auth" class="btn btn-primary ladda-button" data-style="zoom-in">
+>>>>>>> df5e652e59a0e89dface4c68ec77e2c97893c7cd
         <span class="ladda-label">Slack Auth (temp)</span>
       </button>
       <button id="slack_mssgs" class="btn btn-primary ladda-button" data-style="zoom-in">
         <span class="ladda-label">Get Messages (temp)</span>
+<<<<<<< HEAD
       </button>
       <button id="authorize_button" class="btn btn-primary ladda-button .text-success" data-color="green" data-style="zoom-in">
         <span class="ladda-label">Gmail Auth (temp)</span>
@@ -91,6 +122,9 @@
       <button id="signout_button" class="btn btn-primary ladda-button" data-color="green" data-style="zoom-in">
         <span class="ladda-label">Sign Out</span>
       </button>
+=======
+      </button> -->
+
     </div>
 
     <div class="row pt-3 pl-3 pr-3 pb-0 mb-0">
@@ -126,13 +160,14 @@
     </div>
     <div class="row pt-0 pl-3 pr-3 pb-3 mt-0">
       <div class="messageBox col-md-12 p-0">
+        <!-- Tab content -->
         <div class="tab-content" id="nav-tabContent">
           <div class="tab-pane fade show active" id="nav-favorites" role="tabpanel" aria-labelledby="nav-favorites-tab">
             <div class="container dragula-container">
               <a class="message" href="https://messenger.com">
                 <div class="row pl-3 pt-3 pr-3 pb-3 unread d-flex align-items-center border-bottom border-dark">
                   <div class="col-1 messagePlatform">
-                      <i class="fa fa-grip-vertical fa-lg mr-2 messageGrip hidden" aria-hidden="true"></i>
+                    <i class="fa fa-grip-vertical fa-lg mr-2 messageGrip hidden" aria-hidden="true"></i>
                     <img class="messageIcon" src="./assets/icons/groupme.png">
                   </div>
                   <div class="col-3 messageSender">
@@ -385,6 +420,7 @@
       </div>
     </div>
 
+
     <!-- <div class="row p-3">
       <div class= "sign-in">
       <button id="authorize_button" style="display: block;" >Authorize (GMAIL)</button>
@@ -392,7 +428,7 @@
     </div>
     </div> -->
     
-  </div>
+  <!-- </div> -->
 
   <!-- <script src="popup.js"></script> -->
   
@@ -403,7 +439,11 @@
     </script> -->
 
     <!-- <script src="popup.js"></script> -->
+
+    <!-- Local Scripts -->
+
     <script src="./js/dragula.min.js"></script>
+    <script src="./js/updates.js"></script>
     <script src="./js/dragging.js"></script>
 
 </body>

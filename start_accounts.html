@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Team 11 67-475">
+  <meta name="Message Application">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+  <title>(7) App Title</title>
+
+  <!-- <link rel="icon" href="./assets/logo_wind.png" type="image/png" sizes="16x16"> -->
+
+
+  <!-- %%%% STYLES %%%% -->
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+
+  <!-- Dragula -->
+  <link rel="stylesheet" href="css/dragula.min.css">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+    crossorigin="anonymous">
+
+  <!-- Fonts -->
+  <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800" rel="stylesheet"> -->
+
+  <!-- General App Styles -->
+  <link rel="stylesheet" media="all" type="text/css" href="css/styles.css">
+
+  <!-- %%%% END STYLES %%%% -->
+
+  <!-- %%%% SCRIPTS %%%% -->
+
+  <!-- *all scripts must be loaded locally* -->
+
+  <!-- jquery -->
+  <script src="./js/jquery.js"></script>
+
+  <!-- Boostrap -->
+  <script src="./js/popper.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+
+  <!-- General App Scripts -->
+  <script src="./js/slackauth.js"></script>
+  <script src="./js/refreshconvos.js"></script>
+
+  <!-- %%%% END SCRIPTS %%%% -->
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row p-3">
+      <div class="col-md-10 d-flex p-0">
+        <div class="greeting pt-3">
+          <h3>Nice to meet you!</h3>
+          <h3>Cluster puts all of your messages in one location.</br>
+            To get started please sign into your accounts.
+          </h3>
+          <div class="row">
+            <div class="card m-3 p-2" style="width: 18rem;">
+              <img class="card-img-top" src="assets/icons/gmail_square.png" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Gmail</h5>
+                <button id="" class="btn btn-primary ladda-button" data-style="zoom-in">
+                  <span class="ladda-label">Login</span>
+                </button>
+              </div>
+            </div>
+            <div class="card m-3 p-2" style="width: 18rem;">
+              <img class="card-img-top" src="assets/icons/slack.png" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Slack</h5>
+                <button id="slack_auth" class="btn btn-primary ladda-button" data-style="zoom-in">
+                  <span class="ladda-label">Login</span>
+                </button>
+              </div>
+            </div>
+            <div class="card m-3 p-2" style="width: 18rem;">
+              <img class="card-img-top" src="assets/icons/groupme.png" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Groupme</h5>
+                <button id="" class="btn btn-primary ladda-button" data-style="zoom-in">
+                  <span class="ladda-label">Login</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn btn-default nameBackBtn border border-light m-3">Back</button>
+            <button class="btn btn-default accountSaveBtn border border-light ml-1 mt-3 mr-3 mb-3">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Local Scripts -->
+    <script src="./js/dragula.min.js"></script>
+    <script src="./js/dragging.js"></script>
+    <script src="./js/updates.js"></script>
+</body>
+
+</html>

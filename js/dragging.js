@@ -11,9 +11,19 @@ var buffy = dragula({
   }, 
 })
 
+function updateMessages() {
+  chrome.storage.local.get('content', function(result) {
+    $("#nav-tabContent").html(result.content);
+    updateMessageEvents()
+  });
+}
+
 function updateMessageEvents() {
+  console.log("updating message events")
   Array.from(document.getElementsByClassName("message")).forEach(el => {
+    console.log(el)
     el.addEventListener("mouseover", function() {
+      console.log("adding event listener mouseover")
       this.getElementsByClassName("messageGrip")[0].classList.remove("hidden")
       this.childNodes[1].classList.remove("pl-3");
       this.childNodes[1].classList.add("pl-0")
@@ -26,7 +36,7 @@ function updateMessageEvents() {
   });
 }
 
-updateMessageEvents()
+updateMessages()
 
 
 // function messageHover(el) {
