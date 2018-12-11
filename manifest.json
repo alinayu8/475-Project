@@ -32,8 +32,11 @@
     "activeTab", 
     "tabs",
     "identity",
+    "identity.email",
     "https://www.googleapis.com/*",
-    "https://accounts.google.com/*"
+    "https://accounts.google.com/*",
+    "storage"
+
   ],
 
   "oauth2": {

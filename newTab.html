@@ -44,16 +44,13 @@
   <!-- Boostrap -->
   <script src="./js/popper.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
-<<<<<<< HEAD
   <script src="./js/bootstrap.min.js"></script>
-  <script src="./js/gmailapi3.js"></script> 
+  <script src="./js/gmailapi4.js"></script> 
   <script src="https://apis.google.com/js/client.js"></script>
 
 
   <!-- GMAIL AUTH AND API SCRIPTS -->
-=======
   <script src="./js/auth.js"></script>
->>>>>>> c818c4a36371f29d6647a1ad6625e062ab79b518
 
   <!-- General App Scripts -->
 
@@ -74,16 +71,25 @@
     <div class="row p-3">
       <div class="col-md-12 d-flex p-0">
         <div class="greeting pt-3">
-          <h1>Good Evening, Dylan.</h1>
+          <h1>Good Evening, Obeeeeezy.</h1>
           <h3>You have 7 unread messages.</h3>
         </div>
       </div>
       <!-- temporary Slack auth button -->
-      <button id="slack_auth" class="btn btn-primary ladda-button" data-style="zoom-in">
+      <button id="slack_auth" class="btn btn-primary ladda-button " data-style="zoom-in">
         <span class="ladda-label">Slack Auth (temp)</span>
       </button>
       <button id="slack_mssgs" class="btn btn-primary ladda-button" data-style="zoom-in">
         <span class="ladda-label">Get Messages (temp)</span>
+      </button>
+      <button id="authorize_button" class="btn btn-primary ladda-button .text-success" data-color="green" data-style="zoom-in">
+        <span class="ladda-label">Gmail Auth (temp)</span>
+      </button>
+      <button id="gmail_threads" class="btn btn-primary ladda-button" data-color="green" data-style="zoom-in">
+        <span class="ladda-label">Load Threads (temp)</span>
+      </button>
+      <button id="signout_button" class="btn btn-primary ladda-button" data-color="green" data-style="zoom-in">
+        <span class="ladda-label">Sign Out</span>
       </button>
     </div>
 
@@ -379,12 +385,12 @@
       </div>
     </div>
 
-    <div class="row p-3">
+    <!-- <div class="row p-3">
       <div class= "sign-in">
       <button id="authorize_button" style="display: block;" >Authorize (GMAIL)</button>
       <button id="signout_button" style="display: block;" >Sign Out (GMAIL)</button>
     </div>
-    </div>
+    </div> -->
     
   </div>
 
