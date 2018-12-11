@@ -13,10 +13,6 @@ window.onload = update_page()
 
 function update_page() {
   updateCover()
-  // var firstTime = first_time(function(result) {
-  //   return result
-  // });
-  // console.log(firstTime)
   if (inSetUp()) {
     console.log("in set up")
     setUpPages()
@@ -25,6 +21,9 @@ function update_page() {
   else if (first_time()) { 
     console.log("setting up")
     setUp() 
+  }
+  else if (inSettings()) {
+    updateSettingsInfo()
   }
   else if (window.location.pathname == "/newTab.html") {
     update_badges()
@@ -111,7 +110,7 @@ function saveAccounts() {
 }
 
 function updateCover() {
-  if (inSetUp()) {
+  if (inSetUp() || inSettings()) {
     document.body.setAttribute("style", `
       background: url(https://source.unsplash.com/bF2vsubyHcQ) no-repeat center center fixed;
       -webkit-background-size: cover;
@@ -120,6 +119,9 @@ function updateCover() {
       background-size: cover;
     `)
   }
+  // chrome.storage.sync.set({'theme': "https://source.unsplash.com/bF2vsubyHcQ"}, function() { //saves the name to the cloud
+  //   console.log('theme saved: ' + "https://source.unsplash.com/bF2vsubyHcQ");
+  // });
 }
 
 // NORMAL PAGE UPDATES (post set up)
@@ -233,3 +235,101 @@ function hideMessages() {
   document.getElementsByClassName('messageTabs')[0].style.display = 'none';
   document.getElementsByClassName('messageBox')[0].style.display = 'none';
 }
+
+// CHANGING USER SETTINGS
+
+function inSettings() {
+  return window.location.pathname == "/user_settings.html"
+}
+
+function updateSettingsInfo() {
+  // updateSelectedTheme()
+  updateSaveBtn()
+  updateThemeBtns()
+}
+
+function updateSaveBtn() {
+  saveBtn = document.getElementsByClassName("saveIcon")[0]
+  saveBtn.addEventListener('click', saveInfo)
+}
+
+function saveInfo() {
+  saveGroup()
+  saveAccounts()
+  saveTheme()
+}
+
+function saveGroup() {
+  group1TimeSelect = document.getElementsByClassName("groupTimeSelect")[0]
+  group1Time = group1TimeSelect.options[group1TimeSelect.selectedIndex].value
+  group2TimeSelect = document.getElementsByClassName("groupTimeSelect")[1]
+  group2Time = group2TimeSelect.options[group2TimeSelect.selectedIndex].value
+  chrome.storage.sync.set({'group1Time': group1Time}, function() { //saves the name to the cloud
+    console.log('group1Time saved: ' + group1Time);
+  }); 
+  chrome.storage.sync.set({'group2Time': group2Time}, function() { //saves the name to the cloud
+    console.log('group2Time saved: ' + group2Time);
+  }); 
+}
+
+function saveAccounts() {
+  // handled in slackauth.js
+  // saved to slackUserToken
+}
+
+function saveTheme() {
+  chrome.storage.sync.get(['newThemeLink'], function(result) {
+    chrome.storage.sync.set({'themeLink': result.newThemeLink}, function() { //saves the name to the cloud
+      console.log('themeLink saved: ' + result.newThemeLink);
+    }); 
+  })
+}
+
+function updateThemeBtns() {
+  themeBtns = document.getElementsByClassName("themeBtn")
+  for (i=0; i < themeBtns.length; i++) {
+    themeBtn = themeBtns[i]
+    themeBtn.addEventListener('click', chooseTheme)
+  }
+}
+
+function test() {
+  console.log("clicked theme button choose")
+}
+
+function chooseTheme() {
+  btn = this
+  link = ""
+  if (btn.classList.contains('searchThemeBtn')) {
+    link = chooseSearchTheme(btn.parentElement.parentElement)
+  } else {
+    btnCard = btn.parentElement.parentElement
+    image = btnCard.childNodes[1]
+    link = image.src
+    console.log(image)
+  }
+  chrome.storage.sync.set({'newThemeLink': link}, function() { //saves the name to the cloud
+    console.log('newThemeLink saved: ' + link);
+  }); 
+  document.body.setAttribute("style", `
+  background: url(${link}) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+`)
+}
+
+function chooseSearchTheme(btnCard) {
+  term = btnCard.childNodes[1].childNodes[1].value
+  link = convertTermToLink(term)
+  console.log(link)
+  return link
+}
+
+function convertTermToLink(term) {
+  term = term.replace(/ +/g, "")
+  linkHeader = "https://source.unsplash.com/featured/?"
+  return linkHeader+term
+}
+
