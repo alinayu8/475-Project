@@ -245,8 +245,11 @@ function inSettings() {
 function updateSettingsInfo() {
   // updateSelectedTheme()
   updateSaveBtn()
+  updateIconBtns()
   updateThemeBtns()
 }
+
+// Save Functions
 
 function updateSaveBtn() {
   saveBtn = document.getElementsByClassName("saveIcon")[0]
@@ -285,16 +288,31 @@ function saveTheme() {
   })
 }
 
+// Icon Functions
+function updateIconBtns() {
+  iconBtns = document.getElementsByClassName('dropdown-item-icon')
+  for (i=0; i < iconBtns.length; i++) {
+    iconBtn = iconBtns[i]
+    iconBtn.addEventListener('click', chooseIcon)
+  }
+}
+
+function chooseIcon() {
+  btn = this
+  iconClass = btn.childNodes[1].classList[1]
+  groupButton = btn.parentElement.parentElement.childNodes[1]
+  icon = groupButton.childNodes[1]
+  icon.classList = `fa ${iconClass}`
+}
+
+// Theme Functions
+
 function updateThemeBtns() {
   themeBtns = document.getElementsByClassName("themeBtn")
   for (i=0; i < themeBtns.length; i++) {
     themeBtn = themeBtns[i]
     themeBtn.addEventListener('click', chooseTheme)
   }
-}
-
-function test() {
-  console.log("clicked theme button choose")
 }
 
 function chooseTheme() {
