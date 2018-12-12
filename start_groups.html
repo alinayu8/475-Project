@@ -57,9 +57,12 @@
 
   <div class="container">
     <div class="row p-3">
-      <div class="col-md-8 d-flex p-0">
+      <div class="col-md-10 d-flex p-0">
         <div class="greeting pt-3">
-          <h3>Customize Groups</h3>
+          <h3>
+            You can sort your messages into 3 groups.</br>
+            The first is Favorites, the other 2 are up to you.
+          </h3>
           <div class="row">
             <div class="groupCard card m-3 p-2 d-flex align-items-center">
               <div class="card-body p-2">
@@ -166,90 +169,9 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-2 d-flex pt-4 pb-5 pl-5 pr-2 justify-content-end">
-        <a class="btn btn-primary icon saveIcon d-flex align-items-center" href="#">
-          Save Settings
-        </a>
-      </div>
-      <div class="col-md-2 d-flex pt-4 pb-5 pl-5 pr-2 justify-content-start">
-        <a class="btn btn-primary icon dndIcon" href="/newTab.html" data-toggle="tooltip" data-placement="bottom" title="Back to Messages">
-          <i class="fas fa-arrow-left fa-2x pt-1 pb-1"></i>
-        </a>
-      </div>
-    </div>
-    <div class="row p-3">
-      <div class="col-md-12 d-flex p-0">
-        <div class="greeting pt-3">
-          <h3>Manage Your Accounts</h3>
-
           <div class="row">
-            <div class="accountCard card m-3 p-2" style="width: 18rem;">
-              <img class="card-img-top" src="assets/icons/gmail_square.png" alt="Card image cap">
-              <div class="card-body p-2">
-                <h5 class="card-title">Gmail</h5>
-                <button id="" class="accountBtn btn btn-primary ladda-button" data-style="zoom-in">
-                  <span class="ladda-label">Login</span>
-                </button>
-              </div>
-            </div>
-            <div class="accountCard card m-3 p-2" style="width: 18rem;">
-              <img class="card-img-top" src="assets/icons/slack.png" alt="Card image cap">
-              <div class="card-body p-2">
-                <h5 class="card-title">Slack</h5>
-                <button id="slack_auth" class="accountBtn btn btn-primary ladda-button" data-style="zoom-in">
-                  <span class="ladda-label">Login</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row p-3">
-      <div class="col-md-12 d-flex p-0">
-        <div class="greeting pt-3">
-          <h3>Choose a Theme</h3>
-          <div class="row">
-            <div class="themeCard card m-3 p-2">
-              <img class="card-img-top" src="https://source.unsplash.com/bF2vsubyHcQ" alt="Card image cap">
-              <div class="card-body p-2">
-                <h5 class="card-title">Default</h5>
-                <button class="btn btn-primary ladda-button themeBtn" data-style="zoom-in">
-                  <span class="ladda-label">Choose</span>
-                </button>
-              </div>
-            </div>
-            <div class="themeCard card m-3 p-2">
-              <img class="card-img-top" src="https://source.unsplash.com/collection/151521/" alt="Card image cap">
-              <div class="card-body p-2">
-                <h5 class="card-title">Shapes & Patterns</h5>
-                <button id="" class="btn btn-primary ladda-button themeBtn" data-style="zoom-in">
-                  <span class="ladda-label">Choose</span>
-                </button>
-              </div>
-            </div>
-            <div class="themeCard card m-3 p-2">
-              <img class="card-img-top" src="https://source.unsplash.com/collection/213162/" alt="Card image cap">
-              <div class="card-body p-2">
-                <h5 class="card-title">Winter</h5>
-                <button id="" class="btn btn-primary ladda-button themeBtn" data-style="zoom-in">
-                  <span class="ladda-label">Choose</span>
-                </button>
-              </div>
-            </div>
-            <div class="themeCard card m-3 p-2">
-              <div class="card-textInput d-flex align-items-center justify-content-center">
-                <input class="m-2 searchTheme" type="text" value="Enter topic here">
-              </div>
-              <div class="card-body p-2">
-                <h5 class="card-title">Pick your own</h5>
-                <button id="" class="btn btn-primary ladda-button themeBtn searchThemeBtn" data-style="zoom-in">
-                  <span class="ladda-label">Choose</span>
-                </button>
-              </div>
-            </div>
+            <button class="btn btn-default accountBackBtn border border-light m-3">Back</button>
+            <button class="btn btn-default groupSaveBtn border border-light ml-1 mt-3 mr-3 mb-3">Continue</button>
           </div>
         </div>
       </div>

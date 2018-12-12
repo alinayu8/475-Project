@@ -12,7 +12,7 @@ $(function () {
 window.onload = update_page()
 
 function update_page() {
-  updateCover()
+  load_theme()
   if (inSetUp()) {
     console.log("in set up")
     setUpPages()
@@ -38,19 +38,6 @@ function update_page() {
 // we save "name" in chrome and local storage, and check if name 
 // has been set in local storage to determine if set up has occured
 function first_time() {
-  // chrome.storage.sync.get(['name'], function(result) {
-  //   console.log('Name is currently' + result.name)
-  //   console.log(result.name == null)
-  //   if (result.name == null) { 
-  //     console.log("first time")
-  //     var firstTime = true 
-  //   } else {
-  //     console.log("not first time")
-  //     var firstTime = false
-  //   }
-  //   console.log(firstTime)
-  //   callback(firstTime)
-  // })
   var name = localStorage.getItem("name")
   if (name == null) { return true }
   return false
@@ -63,7 +50,7 @@ function setUp() {
 // If first time, then set up everything
 
 function inSetUp() {
-  setupPages = ["/start.html", "/start_accounts.html"]
+  setupPages = ["/start.html", "/start_accounts.html", "/start_groups.html", "/start_theme.html"]
   for (i = 0; i < setupPages.length; i++) {
     if (window.location.pathname == setupPages[i]) {
       return true
@@ -76,6 +63,9 @@ function setUpPages() {
   let path = window.location.pathname
   if (path == "/start.html") { setUpStartPage() }
   else if (path == "/start_accounts.html") { setUpAccountsPage() }
+  else if (path == "/start_groups.html") {setUpGroupsPage()}
+  else if (path == "/start_theme.html") {setUpThemePage()}
+
 }
 
 function setUpStartPage() {
@@ -84,10 +74,27 @@ function setUpStartPage() {
 }
 
 function setUpAccountsPage() {
+  console.log("setting up accounts page")
   document.getElementsByClassName("nameBackBtn")[0].addEventListener('click', function () {
     window.location = "start.html"
   })
   document.getElementsByClassName("accountSaveBtn")[0].addEventListener('click', saveAccounts);
+}
+
+function setUpGroupsPage() {
+  document.getElementsByClassName("accountBackBtn")[0].addEventListener('click', function () {
+    window.location = "start_accounts.html"
+  })
+  document.getElementsByClassName("groupSaveBtn")[0].addEventListener('click', saveGroupInSetUp);
+  updateIconBtns()
+}
+
+function setUpThemePage() {
+  document.getElementsByClassName("groupBackBtn")[0].addEventListener('click', function () {
+    window.location = "start_groups.html"
+  })
+  document.getElementsByClassName("themeSaveBtn")[0].addEventListener('click', saveThemeInSetUp);
+  updateThemeBtns()
 }
 
 function saveName() {
@@ -102,25 +109,25 @@ function saveName() {
 }
 
 function saveAccounts() {
+  console.log("Saving accounts")
   if (inSetUp()) {
-    window.location = "newTab.html"
+    window.location = "start_groups.html"
+    loadGroups()
   }
 }
 
-function updateCover() {
-  if (inSetUp() || inSettings()) {
-    document.body.setAttribute("style", `
-      color: #fff;
-      background: url(https://source.unsplash.com/bF2vsubyHcQ) no-repeat center center fixed;
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
-    `)
+function saveGroupInSetUp() {
+  saveGroup()
+  if (inSetUp()) {
+    window.location = "start_theme.html"
   }
-  // chrome.storage.sync.set({'theme': "https://source.unsplash.com/bF2vsubyHcQ"}, function() { //saves the name to the cloud
-  //   console.log('theme saved: ' + "https://source.unsplash.com/bF2vsubyHcQ");
-  // });
+}
+
+function saveThemeInSetUp() {
+  saveTheme()
+  if (inSetUp()) {
+    window.location = "newTab.html"
+  }
 }
 
 // NORMAL PAGE UPDATES (post set up)
@@ -320,7 +327,7 @@ function loadGroups() {
     group1TimeSelect = document.getElementsByClassName("groupTimeSelect")[0]
     group1Title.selectedIndex = getSelectedIndexFromTime(result.group1Time)
   })
-  chrome.storage.sync.get({'group2Icon': 'fa fa-graduaction-cap'}, function (result) {
+  chrome.storage.sync.get({'group2Icon': 'fa fa-graduation-cap'}, function (result) {
     group2Icon = document.getElementsByClassName('iconSelect')[1].childNodes[1].childNodes[1].childNodes[1]
     group2Icon.className = result.group2Icon
   })
@@ -359,7 +366,6 @@ function updateSaveBtn() {
 
 function saveInfo() {
   saveGroup()
-  saveAccounts()
   saveTheme()
 }
 
@@ -406,11 +412,6 @@ function saveTime() {
   chrome.storage.sync.set({ 'group2Time': group2Time }, function () { //saves the name to the cloud
     console.log('group2Time saved: ' + group2Time);
   });
-}
-
-function saveAccounts() {
-  // handled in slackauth.js
-  // saved to slackUserToken
 }
 
 function saveTheme() {

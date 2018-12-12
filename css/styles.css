@@ -35,7 +35,7 @@
   font-weight: 400;
 }
 
-.greeting h1 > input {
+.nameInput {
   background-color: transparent;
   color: #fff;
   border: none;
@@ -45,8 +45,8 @@
   /* max-width: 200px; */
 }
 
-.greeting h1 > input:focus {
-}
+/* .greeting h1 > input:focus {
+} */
 
 .greeting h3 {
   filter: drop-shadow(0px 0px 5px #000);
@@ -195,6 +195,12 @@ nav .nav-tabs > a.nav-dragOver {
   width: 100%;
   margin-left: 4px;
   margin-right: 12px;
+  background-color: #e7e7e7
+}
+
+.groupCard input{
+  border: 1pt solid black;
+  padding: 0.2rem;
 }
 
 .themeCard {
