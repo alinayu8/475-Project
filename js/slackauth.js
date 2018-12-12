@@ -10,7 +10,10 @@ $(document).ready(function() {
     // Get Slack access token
     function authenticateSlack() {
         //var redirectUri = "https://gifolagmeampojmmieheifnieomimglm.chromiumapp.org/"
-        var redirectUri = "https://" + chrome.runtime.id + ".chromiumapp.org/"
+        //https://pobjdimebdonkghjachofmnflfjmmmgl.chromiumapp.org/
+        //var redirectUri = "https://" + chrome.runtime.id + ".chromiumapp.org/"
+        var redirectUri = chrome.identity.getRedirectURL("");
+        console.log(redirectUri)
         var client_id = '347262053333.468176603908';
         var enc_client_secret = 'MGIwZDBkMmQ1YzNkZTE2ZGFiMmFiODBjODY5YjY1N2Y='; //encoded
         var scopes = 'channels:history,groups:history,channels:read,im:read,im:history,users:read,team:read';
@@ -85,11 +88,12 @@ $(document).ready(function() {
                         let key = Object.keys(channelDictionary)[j];
                         let channelName = channelDictionary[key];
                         if ($('a[href*="'+ key +'"]').length == 0) {
+                            console.log(key + " " + channelName)
                             await addSlackConversations(token, key, channelName);
-                            console.log("new channel")
+                            console.log("new channel " + channelName)
                         } else {
                             await updateSlackConversations(token, key, channelName);
-                            console.log("existing channel")
+                            console.log("existing channel" + channelName)
                         }                        
                     }
                 }
@@ -137,7 +141,7 @@ $(document).ready(function() {
             </a>`
 
             $('#nav-unassigned .dragula-container').append(text);
-            console.log($('#nav-unassigned .dragula-container').html())
+            //console.log($('#nav-unassigned .dragula-container').html())
         }
     } 
 
@@ -257,6 +261,7 @@ $(document).ready(function() {
                         }
                         // Combine channel convos with im convos
                         var allConvos = Object.assign({}, channelDictionary, slackIMs);
+                        console.log(allConvos)
                         resolve(allConvos);
                     }
                 }
@@ -298,6 +303,7 @@ $(document).ready(function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     let resp = JSON.parse(xhr.responseText);
                     if (resp['ok'] == true) { // If CHANNEL message
+                        console.log(resp)
                         var text = resp['messages'][0]['text'];
                         var user = resp['messages'][0]['user'];
                         var ts = resp['messages'][0]['ts'];
@@ -326,12 +332,14 @@ $(document).ready(function() {
     // Retrieve and return Slack IM message details (and return empty array if the message is empty)
     function retrieveIMSlackMessages(channelID, token) {
         return new Promise(function(resolve, reject) {
+            console.log(channelID)
             let url = "https://slack.com/api/im.history?token="+token+"&channel="+channelID+"&unreads=true&count=1";
             let xhr = new XMLHttpRequest();
             xhr.open("GET", url, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     let resp = JSON.parse(xhr.responseText);
+                    console.log(resp)
                     if (resp['messages'].length > 0) {
                         var text = resp['messages'][0]['text'];
                         var user = resp['messages'][0]['user'];
