@@ -1,7 +1,7 @@
 {
-  "name": "Getting Started Example",
+  "name": "Cluster",
   "version": "1.0",
-  "description": "Build an Extension!",
+  "description": "A smarter way to manage your messages.",
   "permissions": ["activeTab", "declarativeContent", "storage", "identity", "tabs"],
   "options_page": "options.html",
   "background": {
@@ -21,10 +21,10 @@
     "newtab": "newTab.html"
   },
   "icons": {
-    "16": "images/get_started16.png",
-    "32": "images/get_started32.png",
-    "48": "images/get_started48.png",
-    "128": "images/get_started128.png"
+    "16": "images/appIcon/app16.png",
+    "32": "images/appIcon/app32.png",
+    "48": "images/appIcon/app48.png",
+    "128": "images/appIcon/app128.png"
   },
   "manifest_version": 2,
 

@@ -57,3 +57,6 @@ function saveToken(retrievedToken) {
 //     });
 // }
 
+// chrome.browserAction.setBadgeBackgroundColor({color: '#FF7A78'})
+// chrome.browserAction.setBadgeText({text: `5`})
+

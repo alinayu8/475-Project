@@ -5,12 +5,7 @@
   <meta charset="utf-8">
   <meta name="author" content="Team 11 67-475">
   <meta name="Message Application">
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-
-  <title>(7) App Title</title>
-
-  <!-- <link rel="icon" href="./assets/logo_wind.png" type="image/png" sizes="16x16"> -->
-
+  <title>Cluster</title>
 
   <!-- %%%% STYLES %%%% -->
 
@@ -26,8 +21,6 @@
     crossorigin="anonymous">
 
   <!-- Fonts -->
-  <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800" rel="stylesheet"> -->
 
   <!-- General App Styles -->
   <link rel="stylesheet" media="all" type="text/css" href="css/styles.css">
@@ -80,20 +73,14 @@
         </div>
       </div>
       <div class="col-md-2 d-flex pt-5 pb-5 pl-5 pr-2 justify-content-end">
-        <a class="btn btn-primary icon dndIcon">
+        <a class="btn btn-primary icon dndIcon" data-toggle="tooltip" data-placement="bottom" title="Do Not Disturb">
           <i class="fas fa-minus-circle fa-2x pt-1 pb-1"></i>
         </a>
       </div>
       <div class="col-md-2 d-flex pt-5 pb-5 pl-0 pr-5">
-        <a class="btn btn-primary icon settingsIcon" href="/start_accounts.html" role="button">
+        <a class="btn btn-primary icon settingsIcon" href="/user_settings.html" role="button" data-toggle="tooltip" data-placement="bottom" title="User Settings">
           <i class="fas fa-user-cog fa-2x pt-1 pb-1"></i>
         </a>
-        <!-- <div class="collapse" id="collapseExample">
-          <div class="card card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim
-            keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-          </div>
-        </div> -->
       </div>
       <!-- temporary Slack auth button -->
 
@@ -128,27 +115,27 @@
         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
           <a class="nav-item nav-link border-0 active" id="nav-favorites-tab" data-toggle="tab" href="#nav-favorites"
             role="tab" aria-controls="nav-favorites" aria-selected="true">
-            <i class="fa fa-star mr-1" aria-hidden="true"></i>
-            Favorites
+            <i class="groupIcon fa fa-star mr-1" aria-hidden="true"></i>
+            <span class="groupTitle">Favorites</span>
             <span class="badge badge-dark ml-2">3 unread</span>
           </a>
           <a class="nav-item nav-link border-0" id="nav-social-tab" data-toggle="tab" href="#nav-social" role="tab"
             aria-controls="nav-social" aria-selected="false">
-            <i class="fa fa-users" aria-hidden="true"></i>
-            Social
+            <i class="groupIcon" aria-hidden="true"></i>
+            <span class="groupTitle"></span>
             <span class="badge badge-dark ml-2">1 unread</span>
           </a>
           <a class="nav-item nav-link border-0 " id="nav-school-tab" data-toggle="tab" href="#nav-school" role="tab"
             aria-controls="nav-school" aria-selected="false">
-            <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-            School
+            <i class="groupIcon" aria-hidden="true"></i>
+            <span class="groupTitle"></span>
             <span class="badge badge-dark ml-2">3 unread</span>
-            <span class="badge badge-danger ml-2">checked 10hrs ago</span>
+            <span class="badge badge-danger ml-2">checked 6 hrs ago</span>
           </a>
           <a class="nav-item nav-link border-0" id="nav-unassigned-tab" data-toggle="tab" href="#nav-unassigned" role="tab"
-            aria-controls="nav-unassigned" aria-selected="false">
-            <i class="fa fa-box-open" aria-hidden="true"></i>
-            Unassigned
+            aria-controls="nav-unassigned mr-1" aria-selected="false">
+            <i class="groupIcon fa fa-box-open" aria-hidden="true"></i>
+            <span class="groupTitle">Unnassigned</span>
             <span class="badge badge-dark ml-2">10 unread</span>
           </a>
         </div>

@@ -20,6 +20,7 @@ $(document).ready(function() {
         var auth_url = "https://slack.com/oauth/authorize?client_id=" + client_id + "&scope=" + scopes + "&response_type=token";
         
         chrome.identity.launchWebAuthFlow({'url':auth_url,'interactive':true}, function(redirectUri){
+            var redirectUri = "https://pobjdimebdonkghjachofmnflfjmmmgl.chromiumapp.org/"
              console.log("Authenticating through " + redirectUri);
 
              // Getting Verification code

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Team 11 67-475">
+  <meta name="Message Application">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+  <title>Cluster</title>
+
+  <!-- <link rel="icon" href="./assets/logo_wind.png" type="image/png" sizes="16x16"> -->
+
+
+  <!-- %%%% STYLES %%%% -->
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+
+  <!-- Dragula -->
+  <link rel="stylesheet" href="css/dragula.min.css">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+    crossorigin="anonymous">
+
+  <!-- Fonts -->
+  <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800" rel="stylesheet"> -->
+
+  <!-- General App Styles -->
+  <link rel="stylesheet" media="all" type="text/css" href="css/styles.css">
+
+  <!-- %%%% END STYLES %%%% -->
+
+  <!-- %%%% SCRIPTS %%%% -->
+
+  <!-- *all scripts must be loaded locally* -->
+
+  <!-- jquery -->
+  <script src="./js/jquery.js"></script>
+
+  <!-- Boostrap -->
+  <script src="./js/popper.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+
+  <!-- General App Scripts -->
+  <script src="./js/slackauth.js"></script>
+  <script src="./js/refreshconvos.js"></script>
+
+  <!-- %%%% END SCRIPTS %%%% -->
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row p-3">
+      <div class="col-md-8 d-flex p-0">
+        <div class="greeting pt-3">
+          <h3>Customize Groups</h3>
+          <div class="row">
+            <div class="groupCard card m-3 p-2 d-flex align-items-center">
+              <div class="card-body p-2">
+                <div class="row d-flex align-items-center p-1">
+                  <div class="col-3 p-0 pl-2">
+                    <div class="iconSelect">
+                      <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          <i class="fa fa-users"></i>
+                        </button>
+                        <div class="dropdown-menu groupIconSelect" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-users"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-briefcase"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-graduation-cap"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-tag"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-utensils"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-baseball-ball"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-9 p-0">
+                    <h5 class="ml-2">
+                      <input class="groupTitleInput" type="text" value="Social">
+                    </h5>
+                  </div>
+                </div>
+                <div class="row d-flex align-items-center p-1 pl-2">
+                  <select class="groupTimeSelect">
+                    <option value="0">Remind to check every...</option>
+                    <option value="1">hour</option>
+                    <option value="2">2 hours</option>
+                    <option value="6">6 hours</option>
+                    <option value="8">8 hours</option>
+                    <option value="12">12 hours</option>
+                    <option value="24">day</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="groupCard card m-3 p-2 d-flex align-items-center">
+              <div class="card-body p-2">
+                <div class="row d-flex align-items-center p-1">
+                  <div class="col-3 p-0 pl-2">
+                    <div class="iconSelect">
+                      <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          <i class="fa fa-graduation-cap"></i>
+                        </button>
+                        <div class="dropdown-menu groupIconSelect" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-users"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-briefcase"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-graduation-cap"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-tag"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-utensils"></i>
+                          </a>
+                          <a class="dropdown-item dropdown-item-icon" href="#">
+                            <i class="fa fa-baseball-ball"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-9 p-0">
+                    <h5 class="ml-2">
+                      <input class="groupTitleInput" type="text" value="School">
+                    </h5>
+                  </div>
+                </div>
+                <div class="row d-flex align-items-center p-1 pl-2">
+                  <select class="groupTimeSelect">
+                    <option value="0">Remind to check every...</option>
+                    <option value="1">hour</option>
+                    <option value="2">2 hours</option>
+                    <option value="6">6 hours</option>
+                    <option value="8">8 hours</option>
+                    <option value="12">12 hours</option>
+                    <option value="24">day</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 d-flex pt-4 pb-5 pl-5 pr-2 justify-content-end">
+        <a class="btn btn-primary icon saveIcon d-flex align-items-center" href="#">
+          Save Settings
+        </a>
+      </div>
+      <div class="col-md-2 d-flex pt-4 pb-5 pl-5 pr-2 justify-content-start">
+        <a class="btn btn-primary icon backIcon" href="/newTab.html" data-toggle="tooltip" data-placement="bottom" title="Back to Messages">
+          <i class="fas fa-arrow-left fa-2x pt-1 pb-1"></i>
+        </a>
+      </div>
+    </div>
+    <div class="row p-3">
+      <div class="col-md-12 d-flex p-0">
+        <div class="greeting pt-3">
+          <h3>Manage Your Accounts</h3>
+
+          <div class="row">
+            <div class="accountCard card m-3 p-2" style="width: 18rem;">
+              <img class="card-img-top" src="assets/icons/gmail_square.png" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Gmail</h5>
+                <button id="" class="accountBtn btn btn-primary ladda-button" data-style="zoom-in">
+                  <span class="ladda-label">Login</span>
+                </button>
+              </div>
+            </div>
+            <div class="accountCard card m-3 p-2" style="width: 18rem;">
+              <img class="card-img-top" src="assets/icons/slack.png" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Slack</h5>
+                <button id="slack_auth" class="accountBtn btn btn-primary ladda-button" data-style="zoom-in">
+                  <span class="ladda-label">Login</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row p-3">
+      <div class="col-md-12 d-flex p-0">
+        <div class="greeting pt-3">
+          <h3>Choose a Theme</h3>
+          <div class="row">
+            <div class="themeCard card m-3 p-2">
+              <img class="card-img-top" src="https://source.unsplash.com/bF2vsubyHcQ" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Default</h5>
+                <button class="btn btn-primary ladda-button themeBtn" data-style="zoom-in">
+                  <span class="ladda-label">Choose</span>
+                </button>
+              </div>
+            </div>
+            <div class="themeCard card m-3 p-2">
+              <img class="card-img-top" src="https://source.unsplash.com/collection/151521/" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Shapes & Patterns</h5>
+                <button id="" class="btn btn-primary ladda-button themeBtn" data-style="zoom-in">
+                  <span class="ladda-label">Choose</span>
+                </button>
+              </div>
+            </div>
+            <div class="themeCard card m-3 p-2">
+              <img class="card-img-top" src="https://source.unsplash.com/collection/213162/" alt="Card image cap">
+              <div class="card-body p-2">
+                <h5 class="card-title">Winter</h5>
+                <button id="" class="btn btn-primary ladda-button themeBtn" data-style="zoom-in">
+                  <span class="ladda-label">Choose</span>
+                </button>
+              </div>
+            </div>
+            <div class="themeCard card m-3 p-2">
+              <div class="card-textInput d-flex align-items-center justify-content-center">
+                <input class="m-2 searchTheme" type="text" value="Enter topic here">
+              </div>
+              <div class="card-body p-2">
+                <h5 class="card-title">Pick your own</h5>
+                <button id="" class="btn btn-primary ladda-button themeBtn searchThemeBtn" data-style="zoom-in">
+                  <span class="ladda-label">Choose</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Local Scripts -->
+    <script src="./js/dragula.min.js"></script>
+    <script src="./js/dragging.js"></script>
+    <script src="./js/updates.js"></script>
+</body>
+
+</html>

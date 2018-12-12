@@ -5,12 +5,8 @@
   <meta charset="utf-8">
   <meta name="author" content="Team 11 67-475">
   <meta name="Message Application">
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 
   <title>Here are your messages</title>
-
-  <!-- <link rel="icon" href="./assets/logo_wind.png" type="image/png" sizes="16x16"> -->
-
 
   <!-- %%%% STYLES %%%% -->
 
@@ -23,8 +19,6 @@
     crossorigin="anonymous">
 
   <!-- Fonts -->
-  <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800" rel="stylesheet"> -->
 
   <!-- General App Styles -->
   <link rel="stylesheet" media="all" type="text/css" href="./css/styles.css">
@@ -33,17 +27,18 @@
 
   <!-- %%%% SCRIPTS %%%% -->
 
+  <!-- *all scripts must be loaded locally* -->
+
   <!-- jquery -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
+  <script src="./js/jquery.js"></script>
 
   <!-- Boostrap -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
+  <script src="./js/popper.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
 
   <!-- General App Scripts -->
+  <script src="./js/slackauth.js"></script>
+  <script src="./js/refreshconvos.js"></script>
 
   <!-- %%%% END SCRIPTS %%%% -->
 
@@ -51,74 +46,290 @@
 
 <body>
   <div class="container popupBody">
-    <div class="row p-3">
+    <div class="row pt-3 pl-3 pr-3 pb-0 mb-0">
+      <nav class="messageTabs">
+        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link border-0 active" id="nav-favorites-tab" data-toggle="tab" href="#nav-favorites"
+            role="tab" aria-controls="nav-favorites" aria-selected="true">
+            <i class="groupIcon fa fa-star mr-1" aria-hidden="true"></i>
+            <span class="groupTitle">Favorites</span>
+            <span class="badge badge-dark ml-2">3 unread</span>
+          </a>
+          <a class="nav-item nav-link border-0" id="nav-social-tab" data-toggle="tab" href="#nav-social" role="tab"
+            aria-controls="nav-social" aria-selected="false">
+            <i class="groupIcon" aria-hidden="true"></i>
+            <span class="groupTitle"></span>
+            <span class="badge badge-dark ml-2">1 unread</span>
+          </a>
+          <a class="nav-item nav-link border-0 " id="nav-school-tab" data-toggle="tab" href="#nav-school" role="tab"
+            aria-controls="nav-school" aria-selected="false">
+            <i class="groupIcon" aria-hidden="true"></i>
+            <span class="groupTitle"></span>
+            <span class="badge badge-dark ml-2">3 unread</span>
+            <span class="badge badge-danger ml-2">checked 6 hrs ago</span>
+          </a>
+          <a class="nav-item nav-link border-0" id="nav-unassigned-tab" data-toggle="tab" href="#nav-unassigned" role="tab"
+            aria-controls="nav-unassigned mr-1" aria-selected="false">
+            <i class="groupIcon fa fa-box-open" aria-hidden="true"></i>
+            <span class="groupTitle">Unnassigned</span>
+            <span class="badge badge-dark ml-2">10 unread</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+    <div class="row pt-0 pl-3 pr-3 pb-3 mt-0">
       <div class="messageBox col-md-12 p-0">
-        <nav class="border-bottom border-dark">
-          <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-favorites-tab" data-toggle="tab" href="#nav-favorites" role="tab"
-              aria-controls="nav-favorites" aria-selected="true">
-              <i class="fa fa-star" aria-hidden="true"></i>
-              Favorites
-            </a>
-            <a class="nav-item nav-link" id="nav-social-tab" data-toggle="tab" href="#nav-social" role="tab"
-              aria-controls="nav-social" aria-selected="false">
-              <i class="fa fa-users" aria-hidden="true"></i>
-              Social
-            </a>
-            <a class="nav-item nav-link" id="nav-school-tab" data-toggle="tab" href="#nav-school" role="tab"
-              aria-controls="nav-school" aria-selected="false">
-              <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-              School
-            </a>
-          </div>
-        </nav>
+        <!-- Tab content -->
         <div class="tab-content" id="nav-tabContent">
           <div class="tab-pane fade show active" id="nav-favorites" role="tabpanel" aria-labelledby="nav-favorites-tab">
-            <div class="container">
-              <div class="row p-3 message d-flex align-items-center border-bottom border-dark">
-                <div class="col-1">
-                  <p>Icon</p>
+            <div class="container popupMessageContainer dragula-container">
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 unread d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/groupme.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Fourfax Block</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Mark sent a photo.</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>3:00 pm</p>
+                  </div>
                 </div>
-                <div class="col-3">
-                  <p>From</p>
+              </a>
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/gmail.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Desk Management</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Finals + Winter Break Scheduling</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>2:30 pm</p>
+                  </div>
                 </div>
-                <div class="col-7">
-                  <p>Message</p>
+              </a>
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 unread d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/gmail.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Tartan Wind Ensemble</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Rehearsal Tonight</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>10:14 am</p>
+                  </div>
                 </div>
-                <div class="col-1">
-                  <p>Time</p>
+              </a>
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/slack.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>67-475</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Mentor meeting times for Friday.</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>Nov 6</p>
+                  </div>
                 </div>
-              </div>
-              <div class="row p-3 message d-flex align-items-center border-bottom border-dark">
-                <div class="col-1">
-                  <p>Icon</p>
+              </a>
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/groupme.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Residence on Fifth</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Dave: Who's on call tonight?</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>Nov 6</p>
+                  </div>
                 </div>
-                <div class="col-3">
-                  <p>From</p>
+              </a>
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/gmail.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Elizabeth Linville</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>RA Weekly Email</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>Nov 5</p>
+                  </div>
                 </div>
-                <div class="col-7">
-                  <p>Message</p>
+              </a>
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/gmail.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Desk Management</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>November Newsletter</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>Nov 5</p>
+                  </div>
                 </div>
-                <div class="col-1">
-                  <p>Time</p>
+              </a>
+              <a class="message" href="http://www.kings.edu/sites/default/files/Undergraduate-majors_0.jpg">
+                <div class="row pl-3 pt-3 pr-3 pb-3 d-flex unread align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/groupme.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Carol Yaracz</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Check out the King's website</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>Nov 4</p>
+                  </div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
-          <div class="tab-pane fade" id="nav-social" role="tabpanel" aria-labelledby="nav-social-tab">...</div>
-          <div class="tab-pane fade" id="nav-school" role="tabpanel" aria-labelledby="nav-school-tab">...</div>
+          <div class="tab-pane fade" id="nav-social" role="tabpanel" aria-labelledby="nav-social-tab">
+            <div class="container popupMessageContainer dragula-container">
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/groupme.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Fairfax Floor 4</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Free food in the community room.</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>3:00 pm</p>
+                  </div>
+                </div>
+              </a>
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 unread d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/gmail.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Vicki Tanquary</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Vicki shared a document with you.</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>12:00 pm</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav-school" role="tabpanel" aria-labelledby="nav-school-tab">
+            <div class="container popupMessageContainer dragula-container">
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/slack.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>67-442</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Mentor Meetings for next week.</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>3:00 pm</p>
+                  </div>
+                </div>
+              </a>
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 unread d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/gmail.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Gary DiLisio</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Registration information</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>2:30 pm</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="nav-unassigned" role="tabpanel" aria-labelledby="nav-unassigned-tab">
+            <div class="container popupMessageContainer dragula-container">
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/slack.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>05-112</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Mentor Meetings for next week.</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>3:00 pm</p>
+                  </div>
+                </div>
+              </a>
+              <a class="message" href="https://messenger.com">
+                <div class="row pl-3 pt-3 pr-3 pb-3 unread d-flex align-items-center border-bottom border-dark">
+                  <div class="col-1 messagePlatform">
+                    <img class="messageIcon" src="./assets/icons/gmail.png">
+                  </div>
+                  <div class="col-3 messageSender">
+                    <p>Piazza</p>
+                  </div>
+                  <div class="col-6 messageContent">
+                    <p>Activity since 4pm</p>
+                  </div>
+                  <div class="col-2 messageTime">
+                    <p>2:30 pm</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="popup.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
+  <!-- Local Scripts -->
+  <script src="./js/dragula.min.js"></script>
+  <script src="./js/updates.js"></script>
+  <!-- <script src="./js/dragging.js"></script> -->
 </body>
 
 </html>
