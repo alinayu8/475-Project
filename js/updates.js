@@ -162,7 +162,7 @@ function load_sections() {
 }
 
 function load_theme() {
-  chrome.storage.sync.get(['themeLink'], function (result) {
+  chrome.storage.sync.get({'themeLink': 'https://source.unsplash.com/bF2vsubyHcQ'}, function (result) {
     console.log('themeLink is currently' + result.themeLink)
     document.body.setAttribute("style", `
     color: #fff;
@@ -292,11 +292,62 @@ function inSettings() {
 }
 
 function updateSettingsInfo() {
-  // updateSelectedTheme()
+  loadSettings()
   updateSaveBtn()
   updateIconBtns()
   updateAccountsBtns()
   updateThemeBtns()
+}
+
+// Load in previous user settings
+
+function loadSettings() {
+  loadGroups()
+  // loadAccounts()
+  load_theme()
+}
+
+function loadGroups() {
+  chrome.storage.sync.get({'group1Icon': 'fa fa-users'}, function (result) {
+    group1Icon = document.getElementsByClassName('iconSelect')[0].childNodes[1].childNodes[1].childNodes[1]
+    group1Icon.className = result.group1Icon
+  })
+  chrome.storage.sync.get({'group1Title': 'Social'}, function (result) {
+    group1Title = document.getElementsByClassName('groupTitleInput')[0]
+    group1Title.value = result.group1Title
+  })
+  chrome.storage.sync.get({'group1Time': '0'}, function (result) {
+    group1TimeSelect = document.getElementsByClassName("groupTimeSelect")[0]
+    group1Title.selectedIndex = getSelectedIndexFromTime(result.group1Time)
+  })
+  chrome.storage.sync.get({'group2Icon': 'fa fa-graduaction-cap'}, function (result) {
+    group2Icon = document.getElementsByClassName('iconSelect')[1].childNodes[1].childNodes[1].childNodes[1]
+    group2Icon.className = result.group2Icon
+  })
+  chrome.storage.sync.get({'group2Title': 'School'}, function (result) {
+    group2Title = document.getElementsByClassName('groupTitleInput')[1]
+    group2Title.value = result.group2Title
+  })
+  chrome.storage.sync.get({'group2Time': '0'}, function (result) {
+    group2TimeSelect = document.getElementsByClassName("groupTimeSelect")[1]
+    group2Title.selectedIndex = getSelectedIndexFromTime(result.group2Time)
+  })
+}
+
+function getSelectedIndexFromTime(timeVal) {
+  timeVal = parseInt(timeVal)
+  if (timeVal <= 2) {
+    return String(timeVal)
+  } else if (timeVal == 6) {
+    return String(3)
+  } else if (timeVal == 8) {
+    return String(4)
+  } else if (timeVal == 12) {
+    return String(5)
+  } else if (timeVal == 24) {
+    return String(6)
+  }
+  return 0
 }
 
 // Save Functions
