@@ -23,3 +23,5 @@
 //         tokenforcalls = token; //updates global token with new value from authing.
 //     });
 // }
+// chrome.browserAction.setBadgeBackgroundColor({color: '#FF7A78'})
+// chrome.browserAction.setBadgeText({text: `5`})

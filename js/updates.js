@@ -25,7 +25,7 @@ function update_page() {
   else if (inSettings()) {
     updateSettingsInfo()
   }
-  else if (window.location.pathname == "/newTab.html") {
+  else if (window.location.pathname == "/newTab.html" || window.location.pathname == "/popup.html") {
     updateNewTab()
   }
 }
@@ -186,7 +186,9 @@ function load_theme() {
 
 function update_badges() {
   update_tab_badges()
-  update_badges_copy()
+  if (window.location.pathname == "/newTab.html") {
+    update_badges_copy()
+  }
 }
 
 function update_tab_badges() {
@@ -217,6 +219,8 @@ function update_badges_copy() {
   } else {
     greetingMessage.innerHTML = 'You have no unread messages.'
   }
+  // chrome.browserAction.setBadgeBackgroundColor({color: [255, 122, 120]})
+  // chrome.browserAction.setBadgeText({text: `${total_unread}`})
 }
 
 // Update copy such as greeting message
