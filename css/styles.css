@@ -19,6 +19,11 @@
   color: #fff;
 }
 
+.btn:active {
+  background-color: #fff !important;
+  border-color: #fff !important;
+}
+
 .btn:hover {
   background-color: #fff;
   color: #000;
@@ -56,7 +61,7 @@
 
 /* Messages */
 .messageBox {
-  background-color: #cdcdcd;
+  background-color: #e7e7e7;
   height: 375px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -80,7 +85,7 @@ nav .nav-tabs > a.active {
 }
 
 nav .nav-tabs > a.nav-dragOver {
-  background-color: #FFC1C8 
+  background-color: #bebebe
 }
 
 .nav-tabs .nav-link {
@@ -97,7 +102,7 @@ nav .nav-tabs > a.nav-dragOver {
 
 .message:hover {
   text-decoration: none;
-  color: #6B2822;
+  color: #000;
 }
 
 .message p {
@@ -162,6 +167,11 @@ nav .nav-tabs > a.nav-dragOver {
 
 .icon:hover i{
   color: #333;
+}
+
+.saveIcon, .backIcon {
+  background-color: #fff;
+  color: #000;
 }
 
 .dndMode {
