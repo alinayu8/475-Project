@@ -1,14 +1,14 @@
 /* General Styles */
 
-body {
-  /* background-color: #6B2822; */
+/* body {
+  background-color: #6B2822;
   background: url(https://source.unsplash.com/collection/151521/) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   color: #fff
-}
+} */
 
 .container {
   min-width: 1;

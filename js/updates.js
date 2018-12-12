@@ -18,17 +18,15 @@ function update_page() {
     setUpPages()
     return
   }
-  else if (first_time()) { 
+  else if (first_time()) {
     console.log("setting up")
-    setUp() 
+    setUp()
   }
   else if (inSettings()) {
     updateSettingsInfo()
   }
   else if (window.location.pathname == "/newTab.html") {
-    update_badges()
-    update_copy()
-    update_dnd()
+    updateNewTab()
   }
 }
 
@@ -54,7 +52,7 @@ function first_time() {
   //   callback(firstTime)
   // })
   var name = localStorage.getItem("name")
-  if (name == null) {return true}
+  if (name == null) { return true }
   return false
 }
 
@@ -66,7 +64,7 @@ function setUp() {
 
 function inSetUp() {
   setupPages = ["/start.html", "/start_accounts.html"]
-  for (i=0; i < setupPages.length; i++) {
+  for (i = 0; i < setupPages.length; i++) {
     if (window.location.pathname == setupPages[i]) {
       return true
     }
@@ -76,8 +74,8 @@ function inSetUp() {
 
 function setUpPages() {
   let path = window.location.pathname
-  if (path == "/start.html") {setUpStartPage()}
-  else if (path == "/start_accounts.html") {setUpAccountsPage()}
+  if (path == "/start.html") { setUpStartPage() }
+  else if (path == "/start_accounts.html") { setUpAccountsPage() }
 }
 
 function setUpStartPage() {
@@ -86,7 +84,7 @@ function setUpStartPage() {
 }
 
 function setUpAccountsPage() {
-  document.getElementsByClassName("nameBackBtn")[0].addEventListener('click', function() {
+  document.getElementsByClassName("nameBackBtn")[0].addEventListener('click', function () {
     window.location = "start.html"
   })
   document.getElementsByClassName("accountSaveBtn")[0].addEventListener('click', saveAccounts);
@@ -94,9 +92,9 @@ function setUpAccountsPage() {
 
 function saveName() {
   var name = document.getElementsByClassName("nameInput")[0].value
-  chrome.storage.sync.set({'name':name}, function() { //saves the name to the cloud
+  chrome.storage.sync.set({ 'name': name }, function () { //saves the name to the cloud
     console.log('Name saved: ' + name);
-  }); 
+  });
   localStorage.setItem("name", name)
   if (inSetUp()) {
     window.location = "start_accounts.html"
@@ -112,6 +110,7 @@ function saveAccounts() {
 function updateCover() {
   if (inSetUp() || inSettings()) {
     document.body.setAttribute("style", `
+      color: #fff;
       background: url(https://source.unsplash.com/bF2vsubyHcQ) no-repeat center center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
@@ -125,6 +124,56 @@ function updateCover() {
 }
 
 // NORMAL PAGE UPDATES (post set up)
+
+function updateNewTab() {
+  load_sections()
+  load_theme()
+  update_badges()
+  update_copy()
+  update_dnd()
+}
+
+// Load in things from the user's settings
+function load_sections() {
+  chrome.storage.sync.get(['group1Icon'], function (result) {
+    console.log('group1Icon is currently' + result.group1Icon)
+    group1Icon = document.getElementsByClassName('groupIcon')[1]
+    group1Icon.className = result.group1Icon
+    group1Icon.classList.add('groupIcon')
+    group1Icon.classList.add('mr-1')
+  })
+  chrome.storage.sync.get(['group1Title'], function (result) {
+    console.log('group1Title is currently' + result.group1Title)
+    group1Title = document.getElementsByClassName('groupTitle')[1]
+    group1Title.innerHTML = result.group1Title
+  })
+  chrome.storage.sync.get(['group2Icon'], function (result) {
+    console.log('group2Icon is currently' + result.group2Icon)
+    group2Icon = document.getElementsByClassName('groupIcon')[2]
+    group2Icon.className = result.group2Icon
+    group2Icon.classList.add('groupIcon')
+    group2Icon.classList.add('mr-1')
+  })
+  chrome.storage.sync.get(['group2Title'], function (result) {
+    console.log('group2Title is currently' + result.group2Title)
+    group2Title = document.getElementsByClassName('groupTitle')[2]
+    group2Title.innerHTML = result.group2Title
+  })
+}
+
+function load_theme() {
+  chrome.storage.sync.get(['themeLink'], function (result) {
+    console.log('themeLink is currently' + result.themeLink)
+    document.body.setAttribute("style", `
+    color: #fff;
+    background: url(${result.themeLink}) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    `)
+  })
+}
 
 // Update number of unread messages
 
@@ -173,7 +222,7 @@ function update_greeting() {
   headerTimeOfDay = header.getElementsByClassName("timeOfDay")[0]
   greeting = getGreeting()
   headerTimeOfDay.innerHTML = `Good ${greeting},`
-  chrome.storage.sync.get(['name'], function(result) {
+  chrome.storage.sync.get(['name'], function (result) {
     console.log('Name is currently' + result.name)
     headerName = header.getElementsByClassName("name")[0]
     headerName.innerHTML = `${result.name}.`
@@ -198,22 +247,22 @@ function getGreeting() {
 function update_dnd() {
   let dndButton = document.getElementsByClassName('dndIcon')[0]
   dndButton.addEventListener('click', updateDndButton)
-  chrome.storage.sync.get(['dnd'], function(result) {
+  chrome.storage.sync.get(['dnd'], function (result) {
     console.log('dnd is currently ' + result.dnd)
-    if (result.dnd == "true") {hideMessages()}
-    else {showMessages()}
+    if (result.dnd == "true") { hideMessages() }
+    else { showMessages() }
   })
 }
 
 function updateDndButton() {
   let dndButton = document.getElementsByClassName('dndIcon')[0]
   if (dndButton.classList.contains('dndMode')) {
-    chrome.storage.sync.set({'dnd': "false"}, function() { //saves the name to the cloud
+    chrome.storage.sync.set({ 'dnd': "false" }, function () { //saves the name to the cloud
       console.log('dnd saved: ' + "false");
-    }); 
+    });
     showMessages()
   } else {
-    chrome.storage.sync.set({'dnd': "true"}, function() { //saves the name to the cloud
+    chrome.storage.sync.set({ 'dnd': "true" }, function () { //saves the name to the cloud
       console.log('dnd saved: ' + "true");
     });
     hideMessages()
@@ -246,6 +295,7 @@ function updateSettingsInfo() {
   // updateSelectedTheme()
   updateSaveBtn()
   updateIconBtns()
+  updateAccountsBtns()
   updateThemeBtns()
 }
 
@@ -263,16 +313,48 @@ function saveInfo() {
 }
 
 function saveGroup() {
+  saveIcon()
+  saveTitle()
+  saveTime()
+}
+
+function saveIcon() {
+  group1Icon = document.getElementsByClassName('iconSelect')[0].childNodes[1].childNodes[1].childNodes[1]
+  classList1 = String(group1Icon.classList)
+  group2Icon = document.getElementsByClassName('iconSelect')[1].childNodes[1].childNodes[1].childNodes[1]
+  classList2 = String(group2Icon.classList)
+
+  chrome.storage.sync.set({ 'group1Icon': classList1 }, function () { //saves the name to the cloud
+    console.log('group1Icon saved: ' + classList1);
+  });
+  chrome.storage.sync.set({ 'group2Icon': classList2 }, function () { //saves the name to the cloud
+    console.log('group2Icon saved: ' + classList2);
+  });
+}
+
+function saveTitle() {
+  group1Title = document.getElementsByClassName('groupTitleInput')[0].value
+  group2Title = document.getElementsByClassName('groupTitleInput')[1].value
+
+  chrome.storage.sync.set({ 'group1Title': group1Title }, function () { //saves the name to the cloud
+    console.log('group1Title saved: ' + group1Title);
+  });
+  chrome.storage.sync.set({ 'group2Title': group2Title }, function () { //saves the name to the cloud
+    console.log('group2Title saved: ' + group2Title);
+  });
+}
+
+function saveTime() {
   group1TimeSelect = document.getElementsByClassName("groupTimeSelect")[0]
   group1Time = group1TimeSelect.options[group1TimeSelect.selectedIndex].value
   group2TimeSelect = document.getElementsByClassName("groupTimeSelect")[1]
   group2Time = group2TimeSelect.options[group2TimeSelect.selectedIndex].value
-  chrome.storage.sync.set({'group1Time': group1Time}, function() { //saves the name to the cloud
+  chrome.storage.sync.set({ 'group1Time': group1Time }, function () { //saves the name to the cloud
     console.log('group1Time saved: ' + group1Time);
-  }); 
-  chrome.storage.sync.set({'group2Time': group2Time}, function() { //saves the name to the cloud
+  });
+  chrome.storage.sync.set({ 'group2Time': group2Time }, function () { //saves the name to the cloud
     console.log('group2Time saved: ' + group2Time);
-  }); 
+  });
 }
 
 function saveAccounts() {
@@ -281,17 +363,20 @@ function saveAccounts() {
 }
 
 function saveTheme() {
-  chrome.storage.sync.get(['newThemeLink'], function(result) {
-    chrome.storage.sync.set({'themeLink': result.newThemeLink}, function() { //saves the name to the cloud
+  chrome.storage.sync.get(['newThemeLink'], function (result) {
+    chrome.storage.sync.set({ 'themeLink': result.newThemeLink }, function () { //saves the name to the cloud
       console.log('themeLink saved: ' + result.newThemeLink);
-    }); 
+    });
+    chrome.storage.sync.set({ 'newThemeLink': result.newThemeLink }, function () { //saves the name to the cloud
+      console.log('newThemeLink saved: ' + result.newThemeLink);
+    });
   })
 }
 
 // Icon Functions
 function updateIconBtns() {
   iconBtns = document.getElementsByClassName('dropdown-item-icon')
-  for (i=0; i < iconBtns.length; i++) {
+  for (i = 0; i < iconBtns.length; i++) {
     iconBtn = iconBtns[i]
     iconBtn.addEventListener('click', chooseIcon)
   }
@@ -305,11 +390,33 @@ function chooseIcon() {
   icon.classList = `fa ${iconClass}`
 }
 
+// Accounts Functions
+
+function updateAccountsBtns() {
+  chrome.storage.sync.get(['slackUserToken'], function (result) {
+    slackToken = result.slackUserToken
+    if (slackToken != "") {
+      loginSlackBtn()
+    }
+  })
+}
+
+function loginSlackBtn() {
+  slackBtn = document.getElementById('slack_auth')
+  slackBtn.style.bacgroundColor = "#cdcdcd"
+  slackBtn.innerHTML = "Log Out"
+  slackBtn.addEventListener('click', loginSlackBtn())
+}
+
+function loginSlackBtn() {
+
+}
+
 // Theme Functions
 
 function updateThemeBtns() {
   themeBtns = document.getElementsByClassName("themeBtn")
-  for (i=0; i < themeBtns.length; i++) {
+  for (i = 0; i < themeBtns.length; i++) {
     themeBtn = themeBtns[i]
     themeBtn.addEventListener('click', chooseTheme)
   }
@@ -326,10 +433,11 @@ function chooseTheme() {
     link = image.src
     console.log(image)
   }
-  chrome.storage.sync.set({'newThemeLink': link}, function() { //saves the name to the cloud
+  chrome.storage.sync.set({ 'newThemeLink': link }, function () { //saves the name to the cloud
     console.log('newThemeLink saved: ' + link);
-  }); 
+  });
   document.body.setAttribute("style", `
+  color: #fff;
   background: url(${link}) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -348,6 +456,6 @@ function chooseSearchTheme(btnCard) {
 function convertTermToLink(term) {
   term = term.replace(/ +/g, "")
   linkHeader = "https://source.unsplash.com/featured/?"
-  return linkHeader+term
+  return linkHeader + term
 }
 
