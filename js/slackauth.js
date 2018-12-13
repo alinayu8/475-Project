@@ -63,6 +63,7 @@ $(document).ready(function() {
         chrome.storage.sync.set({'slackUserToken':tokens}, function() { // saves the token
             console.log('Tokens saved: ' + tokens);
         });
+        location.reload()
     }
 
     ////////////////////////////// FOLLOWING FUNCTIONS ARE USED FOR ADDING AND UPDATING MESSAGES //////////////////////////////
