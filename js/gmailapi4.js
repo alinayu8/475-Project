@@ -3,7 +3,7 @@
 $(document).ready(function() {
     
       //Specific Details for Gmail API and chrome
-    var client_id = "17382193749-v4fjpqnac4g1h9k9vdd2oroa2mndek2u.apps.googleusercontent.com";
+    var client_id = "17382193749-fppo05gcbs6f5apkdep8vj3ccvnemgav.apps.googleusercontent.com";
     var api_key = "AIzaSyDumxJ12BxSPmIZepjCFkx1Mg180TmpaIQ";
     // var app_id = "aepflfaiednkkpgjclpjoelhggmadeel";
     var app_id = chrome.runtime.id;
@@ -27,7 +27,6 @@ $(document).ready(function() {
     }
 
     function authorizeGmail() {
-
       chrome.identity.getAuthToken({interactive: true}, function(token) {
         console.log(token);
         var retrievedToken = token;
@@ -57,8 +56,6 @@ $(document).ready(function() {
             console.log("SIGNED_OUT");
         }
     )});
-
-
 
     setInterval(authorizeGmail, 60000);
 
