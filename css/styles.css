@@ -186,7 +186,7 @@ nav .nav-tabs > a.nav-dragOver {
 
 .card {
   color: #000;
-  max-width: 100px;
+  max-width: 125px;
   border-radius: 15px;
 }
 
@@ -256,6 +256,11 @@ nav .nav-tabs > a.nav-dragOver {
 
 .tooltip.bs-tooltip-bottom .arrow:before {
   border-bottom-color: #fff !important;
+}
+
+.saved {
+  background-color: #5D9C67;
+  color: #fff;
 }
 
 /* Popup Specific */

@@ -63,8 +63,8 @@ function setUpPages() {
   let path = window.location.pathname
   if (path == "/start.html") { setUpStartPage() }
   else if (path == "/start_accounts.html") { setUpAccountsPage() }
-  else if (path == "/start_groups.html") {setUpGroupsPage()}
-  else if (path == "/start_theme.html") {setUpThemePage()}
+  else if (path == "/start_groups.html") { setUpGroupsPage() }
+  else if (path == "/start_theme.html") { setUpThemePage() }
 
 }
 
@@ -79,6 +79,7 @@ function setUpAccountsPage() {
     window.location = "start.html"
   })
   document.getElementsByClassName("accountSaveBtn")[0].addEventListener('click', saveAccounts);
+  updateAccountsBtns()
 }
 
 function setUpGroupsPage() {
@@ -135,6 +136,8 @@ function saveThemeInSetUp() {
 function updateNewTab() {
   load_sections()
   load_theme()
+  update_messageOrder()
+  update_messageHoverEvents()
   update_badges()
   update_copy()
   update_dnd()
@@ -169,7 +172,7 @@ function load_sections() {
 }
 
 function load_theme() {
-  chrome.storage.sync.get({'themeLink': 'https://source.unsplash.com/bF2vsubyHcQ'}, function (result) {
+  chrome.storage.sync.get({ 'themeLink': 'https://source.unsplash.com/bF2vsubyHcQ' }, function (result) {
     console.log('themeLink is currently' + result.themeLink)
     document.body.setAttribute("style", `
     color: #fff;
@@ -180,6 +183,154 @@ function load_theme() {
     background-size: cover;
     `)
   })
+}
+
+// Update how the messages are ordered
+
+function timestampToDate(timestamp) {
+  var date = new Date(timestamp * 1000);
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var month = months[date.getMonth()];
+  var day = date.getDate();
+  // Hours part from the timestamp
+  var hours = date.getHours();
+  // Minutes part from the timestamp
+  var minutes = "0" + date.getMinutes();
+  // Seconds part from the timestamp
+  var seconds = "0" + date.getSeconds();
+
+  // Will display time in MONTH DAY 10:30:23 format
+  var formattedTime = month + " " + day + " " + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+  return formattedTime
+}
+
+function dateStringToTimestamp(dateString) {
+  date = new Date(dateString)
+  year = new Date()
+  year = year.getFullYear()
+  date.setFullYear(year)
+  return date
+}
+
+function update_messageOrder() {
+  tabBodyIds = ["nav-favorites", "nav-1", "nav-2", "nav-unassigned"]
+  console.log(tabBodyIds.length)
+  // for (i=0; i < tabBodyIds.length; i++) {
+  //   tabBodyId = tabBodyIds[i]
+  //   tabBody = document.getElementById(tabBodyId)
+  //   console.log(`Sorting ${tabBodyId}`)
+  //   sortMessages(tabBody)
+  // }
+
+  // very harcoded for number of tabs 
+  // had issues with getting for loop to run more than once
+  sortMessages(document.getElementById(tabBodyIds[0]))
+  sortMessages(document.getElementById(tabBodyIds[1]))
+  sortMessages(document.getElementById(tabBodyIds[2]))
+  sortMessages(document.getElementById(tabBodyIds[3]))
+}
+
+function sortMessages(tabBody) {
+  tabBodyMessages = tabBody.getElementsByClassName('message')
+  clonedMessages = []
+  for (i = 0; i < tabBodyMessages.length; i++) {
+    clonedMessages.push(tabBodyMessages[i].cloneNode(true))
+  }
+  clonedMessages = messageSort(clonedMessages)
+  clonedMessages = rewriteTimes(clonedMessages)
+  tabBody.childNodes[1].innerHTML = ""
+  for (i = 0; i < clonedMessages.length; i++) {
+    tabBody.childNodes[1].appendChild(clonedMessages[i])
+  }
+}
+
+function messageSort(tabBodyMessages) {
+  n = tabBodyMessages.length
+  for (i = 1; i < n; i++) {
+    key = tabBodyMessages[i]
+    j = i - 1
+    while (j >= 0 && getTimeFromMessage(tabBodyMessages[j]) > getTimeFromMessage(key)) {
+      tabBodyMessages[j + 1] = tabBodyMessages[j]
+      j = j - 1
+    }
+
+    tabBodyMessages[j + 1] = key
+  }
+  return tabBodyMessages.reverse()
+}
+
+function getTimeFromMessage(message) {
+  return dateStringToTimestamp(message.getElementsByClassName('messageTime')[0].childNodes[1].innerHTML)
+}
+
+function rewriteTimes(messages) {
+  today = new Date()
+  for (i = 0; i < messages.length; i++) {
+    messageTime = getTimeFromMessage(messages[i])
+    messageTimeElement = messages[i].getElementsByClassName('messageTime')[0].childNodes[1]
+    if (sameDay(messageTime, today)) {
+      messageTimeElement.innerHTML = convertToTime(messageTime)
+    } else {
+      messageTimeElement.innerHTML = convertToDate(messageTime)
+    }
+  }
+  return messages
+}
+
+function sameDay(date1, date2) {
+  return (date1.getDate() == date2.getDate() && date1.getMonth() == date2.getMonth())
+}
+
+function convertToTime(date) {
+  hour = date.getHours()
+  minutes = date.getMinutes()
+  section = "am"
+  if (hour > 11) {
+    section = "pm"
+  }
+  hour = convert24to12(hour)
+  return `${hour}:${minutes} ${section}`
+}
+
+function convert24to12(hour) {
+  if (hour == 0) {
+    return 12
+  }
+  else if (hour > 12) {
+    return hour - 12
+  }
+  return hour
+}
+
+function convertToDate(date) {
+  months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+    "Aug", "Sep", "Oct", "Nov", "Dec"]
+  return `${months[date.getMonth()]} ${date.getDate()}`
+}
+
+function addInMessages(tabBody, tabBodyMessages) {
+  tabBody.innerHTML = ""
+  for (i = 0; i < tabBodyMessages.length; i++) {
+    tabBody.appendChild(tabBodyMessages[i])
+  }
+}
+
+// Update hover events for messages
+
+function update_messageHoverEvents() {
+  Array.from(document.getElementsByClassName("message")).forEach(el => {
+    el.addEventListener("mouseover", function () {
+      this.getElementsByClassName("messageGrip")[0].classList.remove("hidden")
+      this.childNodes[1].classList.remove("pl-3");
+      this.childNodes[1].classList.add("pl-0")
+    })
+    el.addEventListener("mouseout", function () {
+      this.getElementsByClassName("messageGrip")[0].classList.add("hidden")
+      this.childNodes[1].classList.remove("pl-0")
+      this.childNodes[1].classList.add("pl-3")
+    })
+  });
 }
 
 // Update number of unread messages
@@ -319,33 +470,34 @@ function loadSettings() {
 }
 
 function loadGroups() {
-  chrome.storage.sync.get({'group1Icon': 'fa fa-users'}, function (result) {
+  chrome.storage.sync.get({ 'group1Icon': 'fa fa-users' }, function (result) {
     group1Icon = document.getElementsByClassName('iconSelect')[0].childNodes[1].childNodes[1].childNodes[1]
     group1Icon.className = result.group1Icon
   })
-  chrome.storage.sync.get({'group1Title': 'Social'}, function (result) {
+  chrome.storage.sync.get({ 'group1Title': 'Social' }, function (result) {
     group1Title = document.getElementsByClassName('groupTitleInput')[0]
     group1Title.value = result.group1Title
   })
-  chrome.storage.sync.get({'group1Time': '0'}, function (result) {
+  chrome.storage.sync.get({ 'group1Time': '0' }, function (result) {
     group1TimeSelect = document.getElementsByClassName("groupTimeSelect")[0]
-    group1Title.selectedIndex = getSelectedIndexFromTime(result.group1Time)
+    group1TimeSelect.selectedIndex = getSelectedIndexFromTime(result.group1Time)
   })
-  chrome.storage.sync.get({'group2Icon': 'fa fa-graduation-cap'}, function (result) {
+  chrome.storage.sync.get({ 'group2Icon': 'fa fa-graduation-cap' }, function (result) {
     group2Icon = document.getElementsByClassName('iconSelect')[1].childNodes[1].childNodes[1].childNodes[1]
     group2Icon.className = result.group2Icon
   })
-  chrome.storage.sync.get({'group2Title': 'School'}, function (result) {
+  chrome.storage.sync.get({ 'group2Title': 'School' }, function (result) {
     group2Title = document.getElementsByClassName('groupTitleInput')[1]
     group2Title.value = result.group2Title
   })
-  chrome.storage.sync.get({'group2Time': '0'}, function (result) {
+  chrome.storage.sync.get({ 'group2Time': '0' }, function (result) {
     group2TimeSelect = document.getElementsByClassName("groupTimeSelect")[1]
-    group2Title.selectedIndex = getSelectedIndexFromTime(result.group2Time)
+    group2TimeSelect.selectedIndex = getSelectedIndexFromTime(result.group2Time)
   })
 }
 
 function getSelectedIndexFromTime(timeVal) {
+  console.log(timeVal)
   timeVal = parseInt(timeVal)
   if (timeVal <= 2) {
     return String(timeVal)
@@ -371,6 +523,8 @@ function updateSaveBtn() {
 function saveInfo() {
   saveGroup()
   saveTheme()
+  saveBtn.classList.add('saved')
+  saveBtn.innerHTML = "Settings Saved"
 }
 
 function saveGroup() {
@@ -451,21 +605,39 @@ function chooseIcon() {
 function updateAccountsBtns() {
   chrome.storage.sync.get(['slackUserToken'], function (result) {
     slackToken = result.slackUserToken
-    if (slackToken != "") {
-      loginSlackBtn()
-    }
+    setSlackBtn(slackToken)
+    // if (slackToken != "") {
+    //   loginSlackBtn()
+    // }
   })
 }
 
-function loginSlackBtn() {
+function setSlackBtn(slackToken) {
   slackBtn = document.getElementById('slack_auth')
-  slackBtn.style.bacgroundColor = "#cdcdcd"
-  slackBtn.innerHTML = "Log Out"
-  slackBtn.addEventListener('click', loginSlackBtn())
+  if (slackToken == 'undefined' || slackToken.length == 0) {
+    slackBtn.innerHTML = "Log In"
+  } else {
+    slackBtn.innerHTML = "Log Out"
+    slackBtn.addEventListener('click', logOutSlack)
+    slackBtn.setAttribute('id', 'slack_logOut')
+  }
 }
 
-function loginSlackBtn() {
+// function loginSlackBtn() {
+//   slackBtn = document.getElementById('slack_auth')
+//   slackBtn.style.bacgroundColor = "#cdcdcd"
+//   slackBtn.innerHTML = "Log Out"
+//   slackBtn.addEventListener('click', loginSlackBtn())
+// }
 
+function logOutSlack() {
+  chrome.storage.sync.set({ 'slackUserToken': [] }, function () { // saves the token
+    console.log('Tokens saved: ' + 'empty');
+  });
+  slackBtn = document.getElementById('slack_logOut')
+  slackBtn.innerHTML = "Log In"
+  slackBtn.setAttribute('id', 'slack_auth')
+  location.reload()
 }
 
 // Theme Functions

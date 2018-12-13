@@ -19,18 +19,15 @@ function updateMessages() {
 }
 
 function updateMessageEvents() {
-  console.log("updating message events")
   Array.from(document.getElementsByClassName("message")).forEach(el => {
-    console.log(el)
     el.addEventListener("mouseover", function() {
-      console.log("adding event listener mouseover")
       this.getElementsByClassName("messageGrip")[0].classList.remove("hidden")
       this.childNodes[1].classList.remove("pl-3");
-      this.childNodes[1].classList.add("pl-0")
+      this.childNodes[1].classList.add("pl-1")
     })
     el.addEventListener("mouseout", function() {
       this.getElementsByClassName("messageGrip")[0].classList.add("hidden")
-      this.childNodes[1].classList.remove("pl-0")
+      this.childNodes[1].classList.remove("pl-1")
       this.childNodes[1].classList.add("pl-3")
     })
   });
@@ -106,15 +103,16 @@ function moveToSection(el, target) {
   let targetID = target.getAttribute("href").substring(1);
   let targetSection = document.getElementById(targetID).childNodes[1];
   targetSection.append(el)
-  updateMessageEvents()
   messageHoverOff(el)
+  update_messageOrder()
+  updateMessageEvents()
   // sortTimes(targetSection)
 }
 
-// will need after integration with back end
-function sortTimes(targetSection) {
-  for (i =0; i < length(targetSection.childNodes); i++) {
-    message = targetSection.childNodes[i]
-    messageTime = targetSection.getElementsByClassName("messageTime")[0]
-  }
-}
+// // will need after integration with back end
+// function sortTimes(targetSection) {
+//   for (i =0; i < length(targetSection.childNodes); i++) {
+//     message = targetSection.childNodes[i]
+//     messageTime = targetSection.getElementsByClassName("messageTime")[0]
+//   }
+// }
