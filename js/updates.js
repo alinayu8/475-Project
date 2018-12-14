@@ -261,14 +261,17 @@ function messageSort(tabBodyMessages) {
 }
 
 function getTimeFromMessage(message) {
-  return dateStringToTimestamp(message.getElementsByClassName('messageTime')[0].childNodes[1].innerHTML)
+  console.log(message.getElementsByClassName('messageTime')[0].getElementsByTagName('p')[0].innerHTML)
+  return dateStringToTimestamp(message.getElementsByClassName('messageTime')[0].getElementsByTagName('p')[0].innerHTML)
 }
+
+
 
 function rewriteTimes(messages) {
   today = new Date()
   for (i = 0; i < messages.length; i++) {
     messageTime = getTimeFromMessage(messages[i])
-    messageTimeElement = messages[i].getElementsByClassName('messageTime')[0].childNodes[1]
+    messageTimeElement = messages[i].getElementsByClassName('messageTime')[0].getElementsByTagName('p')[0]
     if (sameDay(messageTime, today)) {
       messageTimeElement.innerHTML = convertToTime(messageTime)
     } else {
@@ -336,6 +339,7 @@ function update_messageHoverEvents() {
 // Update number of unread messages
 
 function update_badges() {
+  console.log("updating badges")
   update_tab_badges()
   if (window.location.pathname == "/newTab.html") {
     update_badges_copy()

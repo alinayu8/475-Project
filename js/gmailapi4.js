@@ -16,8 +16,8 @@ $(document).ready(function() {
     });
 
     
-    checkGmail()
-    // reset()
+    authorizeGmail()
+    reset()
 
 
     function reset() {
@@ -64,10 +64,10 @@ $(document).ready(function() {
       // return;
 
       console.log(mainMessages.size)
-      // if (mainMessages.size > 15) {
-      //   mainMessages.clear()
-      //   return;
-      // }
+      if (mainMessages.size > 15) {
+        mainMessages.clear()
+        return;
+      }
     
       if (typeof tokenNum !== 'undefined') {
           const gmailThreads =  retrieveUserEmailThreads(tokenNum);
@@ -97,6 +97,9 @@ $(document).ready(function() {
         //   addThreads(threadInfo);
         // }
         })
+        // update_messageOrder();
+        // updateMessageEvents();
+        update_page();
     }
 
 

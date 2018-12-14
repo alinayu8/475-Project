@@ -99,6 +99,9 @@ $(document).ready(function() {
                     }
                 }
             }
+            // update_messageOrder();
+            // updateMessageEvents();
+            update_page();
             saveConvo();
         });
     }
@@ -123,20 +126,20 @@ $(document).ready(function() {
             let workspaceName = workspaceDetails[0];
             let workspaceURL = workspaceDetails[1];
 
-            var text = `<a class='message' href='https://` + workspaceURL + `.slack.com/messages/` + channelID + `'>
-            <div class='row pl-3 pt-3 ` + unread + `pr-3 pb-3 d-flex align-items-center border-bottom border-dark'>
+            var text = `<a class='message' href='https://${workspaceURL}.slack.com/messages/${channelID}'>
+            <div class='row pl-3 pt-3 ${unread} pr-3 pb-3 d-flex align-items-center border-bottom border-dark'>
             <div class='col-1 messagePlatform'>
                 <i class='fa fa-grip-vertical fa-lg mr-2 messageGrip hidden' aria-hidden='true'></i>
                 <img class='messageIcon' src='./assets/icons/slack.png'>
             </div>
             <div class='col-3 messageSender'>
-                <p>` + workspaceName + ` > ` + channelName + `</p>
+                <p> ${workspaceName} > ${channelName} + </p>
             </div>
             <div class='col-6 messageContent'>
-                <p>` + sender + ': ' + message + `</p>
+                <p> ${sender} : ${message} </p>
             </div>
             <div class='col-2 messageTime'>
-                <p>` + time + `</p>
+                <p>${time}</p>
             </div>
             </div>
             </a>`
