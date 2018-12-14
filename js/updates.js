@@ -471,6 +471,7 @@ function loadSettings() {
   loadGroups()
   // loadAccounts()
   load_theme()
+  load_name()
 }
 
 function loadGroups() {
@@ -517,6 +518,12 @@ function getSelectedIndexFromTime(timeVal) {
   return 0
 }
 
+function load_name() {
+  chrome.storage.sync.get({ 'name': '' }, function (result) {
+    document.getElementsByClassName('nameInput')[0].value = result.name
+  })
+}
+
 // Save Functions
 
 function updateSaveBtn() {
@@ -535,6 +542,7 @@ function saveGroup() {
   saveIcon()
   saveTitle()
   saveTime()
+  saveName()
 }
 
 function saveIcon() {
