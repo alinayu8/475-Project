@@ -610,9 +610,10 @@ function updateAccountsBtns() {
   chrome.storage.sync.get(['slackUserToken'], function (result) {
     slackToken = result.slackUserToken
     setSlackBtn(slackToken)
-    // if (slackToken != "") {
-    //   loginSlackBtn()
-    // }
+  })
+  chrome.storage.sync.get(['gmailUserToken'], function (result) {
+    gmailToken = result.gmailUserToken
+    setGmailBtn(gmailToken)
   })
 }
 
@@ -627,13 +628,6 @@ function setSlackBtn(slackToken) {
   }
 }
 
-// function loginSlackBtn() {
-//   slackBtn = document.getElementById('slack_auth')
-//   slackBtn.style.bacgroundColor = "#cdcdcd"
-//   slackBtn.innerHTML = "Log Out"
-//   slackBtn.addEventListener('click', loginSlackBtn())
-// }
-
 function logOutSlack() {
   chrome.storage.sync.set({ 'slackUserToken': [] }, function () { // saves the token
     console.log('Tokens saved: ' + 'empty');
@@ -641,6 +635,27 @@ function logOutSlack() {
   slackBtn = document.getElementById('slack_logOut')
   slackBtn.innerHTML = "Log In"
   slackBtn.setAttribute('id', 'slack_auth')
+  location.reload()
+}
+
+function setGmailBtn(gmailToken) {
+  gmailBtn = document.getElementById('gmail_auth')
+  if (gmailToken == 'undefined' || gmailToken.length == 0) {
+    gmailBtn.innerHTML = "Log In"
+  } else {
+    gmailBtn.innerHTML = "Log Out"
+    gmailBtn.addEventListener('click', logOutGmail)
+    gmailBtn.setAttribute('id', 'gmail_logOut')
+  }
+}
+
+function logOutGmail() {
+  chrome.storage.sync.set({ 'gmailUserToken': [] }, function () { // saves the token
+    console.log('Tokens saved: ' + 'empty');
+  });
+  gmailBtn = document.getElementById('gmail_logOut')
+  gmailBtn.innerHTML = "Log In"
+  gmailBtn.setAttribute('id', 'gmail_auth')
   location.reload()
 }
 
