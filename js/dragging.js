@@ -104,7 +104,7 @@ function moveToSection(el, target) {
   let targetSection = document.getElementById(targetID).childNodes[1];
   targetSection.append(el)
   messageHoverOff(el)
-  update_messageOrder()
+  update_page()
   updateMessageEvents()
   // sortTimes(targetSection)
 }
